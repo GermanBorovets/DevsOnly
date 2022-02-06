@@ -8,4 +8,4 @@
 
 Основной код должен располагаться в:
 * Папке `only-dev/devsonly_web/main/templates`
-* Файле `filename.py`
+* Файле `filename.html`

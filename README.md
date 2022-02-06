@@ -1,9 +1,8 @@
 # Проект "DevsOnly"
 
 ### Технологический стек:
-- Python 3.6
+- Python 3.9
 - Django 3.1+
-- MySQL 
 
 ### Инструкция по настройке проекта:
 1. ` git clone https://gitlab.informatics.ru/borovec_g/only-dev.git`
