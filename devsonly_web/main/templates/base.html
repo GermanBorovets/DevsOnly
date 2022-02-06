@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <title>{{ pagename }} - Devs0n1y</title>
+    {% block extra_css %} {% endblock %}
+</head>
+<body>
+<header>
+</header>
+<main>
+{% block content %}
+{% endblock %}
+</main>
+</body>
+</html>
