@@ -41,3 +41,36 @@ class StaffPunishments(models.Model):
     term = models.DateTimeField(default=None)
     # if exists
     reason = models.CharField(max_length=255)
+
+
+class Post(models.Model):
+    author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
+    created = models.DateTimeField()
+    modified = models.DateTimeField()
+    comment_type = models.IntegerField()
+    # type of comment, 0-anonymous, 1-not anonymous
+    likes = models.IntegerField()
+    dislikes = models.IntegerField()
+
+
+class PostElement(models.Model):
+    post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
+    type = models.IntegerField()
+    # type of element, 0-text, 1-image, 2-media
+    text = models.TextField()
+    media = models.CharField(max_length=255)
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
+    likes = models.IntegerField()
+    dislikes = models.IntegerField()
+
+
+class CommentElement(models.Model):
+    comment = models.ForeignKey(to=Comment, on_delete=models.CASCADE)
+    type = models.IntegerField()
+    # type of element, 0-text, 1-image, 2-media
+    text = models.TextField()
+    media = models.CharField(max_length=255)
