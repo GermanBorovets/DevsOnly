@@ -11,14 +11,22 @@ class User(AbstractUser):
     # user rating as team member
     author_rating = models.IntegerField(default=0)
     # user rating as author
+    reg_ip = models.GenericIPAddressField()
+    last_ip = models.GenericIPAddressField()
+    # ip addresses store as str
+    date_of_birth = models.DateField()
 
 
 class UserSettings(models.Model):
     user = models.OneToOneField(to=get_user_model(), on_delete=models.CASCADE)
     profile_picture = models.CharField(max_length=255)
     status = models.CharField(max_length=255)
-    sex = models.IntegerField()
-    preposition = models.CharField(max_length=255)
+    sex = models.CharField(max_length=255)
+    parts_access = models.CharField(max_length=255)
+    # Contains string with 0 and 1 each of which means an ability of profile parts to be seen
+    hard_skills = models.TextField()
+    work_place = models.TextField()
+    education = models.TextField()
 
 
 class Punishments(models.Model):
@@ -37,7 +45,6 @@ class StaffPunishments(models.Model):
     date = models.DateTimeField()
     executor = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE, related_name='executor')
     type = models.IntegerField()
-    # type of punishment, 0-ban, 1-warn, 2-ip ban, 3-mute
     term = models.DateTimeField(default=None)
     # if exists
     reason = models.CharField(max_length=255)

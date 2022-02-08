@@ -6,4 +6,5 @@ os.system('python devsonly_web/manage.py shell -c "from django.core.management.u
           ' get_random_secret_key()"')
 os.system('python devsonly_web/manage.py migrate')
 os.system('''python devsonly_web/manage.py shell -c \
-"from django.contrib.auth import get_user_model;get_user_model().objects.create_superuser('test', 'test@test.test', 'test')"''')
+            "from django.contrib.auth import get_user_model;\
+            get_user_model().objects.create_superuser('test', 'test@test.test', 'test')"''')
