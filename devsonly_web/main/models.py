@@ -11,22 +11,23 @@ class User(AbstractUser):
     # user rating as team member
     author_rating = models.IntegerField(default=0)
     # user rating as author
-    reg_ip = models.GenericIPAddressField()
-    last_ip = models.GenericIPAddressField()
+    reg_ip = models.GenericIPAddressField(null=True)
+    last_ip = models.GenericIPAddressField(null=True)
     # ip addresses store as str
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(null=True)
+    verified = models.BooleanField(default=False)
 
 
 class UserSettings(models.Model):
     user = models.OneToOneField(to=get_user_model(), on_delete=models.CASCADE)
-    profile_picture = models.CharField(max_length=255)
-    status = models.CharField(max_length=255)
+    profile_picture = models.CharField(max_length=255, null=True)
+    status = models.CharField(max_length=255, null=True)
     sex = models.CharField(max_length=255)
-    parts_access = models.CharField(max_length=255)
+    parts_access = models.CharField(max_length=255, default='1111111')
     # Contains string with 0 and 1 each of which means an ability of profile parts to be seen
-    hard_skills = models.TextField()
-    work_place = models.TextField()
-    education = models.TextField()
+    hard_skills = models.TextField(null=True)
+    work_place = models.TextField(null=True)
+    education = models.TextField(null=True)
 
 
 class Punishments(models.Model):
