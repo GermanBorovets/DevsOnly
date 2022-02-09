@@ -1,11 +1,3 @@
-import logging
-
-
-fmt = '[%(levelname)s] %(asctime)s: %(message)s ' \
-    'in %(pathname)s:%(lineno)d'
-logging.basicConfig(level=logging.DEBUG, format=fmt)
-
-
 def get_ip(request) -> str:
     # Function returns ip address from request
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
