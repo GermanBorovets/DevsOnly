@@ -1,23 +1,135 @@
-<div class="menu">
-    <a class="logo" href="#">Devs0n1y</a>
-    <div class="log_buttons">
-        <!-- if user.is_reg  -->
-        <!--
-            <button href="#" class="reg">Регистрация</button>
-            <button href="#" class="reg">Войти</button>
-        -->
-        <!-- else  -->
-        <!--НЕ НАЖИМАТЬ НА ТРИ ТОЧКИ!!!-->
-            <a href="#"><svg width="4vh" height="4vh" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 17V16C8.44772 16 8 16.4477 8 17H9ZM15 17H16C16 16.4477 15.5523 16 15 16V17ZM9 18H15V16H9V18ZM14 17V18H16V17H14ZM10 18V17H8V18H10ZM12 20C10.8954 20 10 19.1046 10 18H8C8 20.2091 9.79086 22 12 22V20ZM14 18C14 19.1046 13.1046 20 12 20V22C14.2091 22 16 20.2091 16 18H14Z"
-                  fill="#009778"/>
-            <path d="M4.29289 14.7071L3.58579 14L3.58579 14L4.29289 14.7071ZM4.80372 14.1963L5.51082 14.9034L5.51082 14.9034L4.80372 14.1963ZM19.1963 14.1963L19.9034 13.4892L19.9034 13.4892L19.1963 14.1963ZM19.7071 14.7071L20.4142 14L20.4142 14L19.7071 14.7071ZM12 3L12 4L12 3ZM19 16H5V18H19V16ZM5 16V15.4142H3V16H5ZM5 15.4142L5.51082 14.9034L4.09661 13.4892L3.58579 14L5 15.4142ZM6 13.7224V10H4V13.7224H6ZM18 10V13.7224H20V10H18ZM18.4892 14.9034L19 15.4142L20.4142 14L19.9034 13.4892L18.4892 14.9034ZM19 15.4142V16H21V15.4142H19ZM19 15.4142L19 15.4142H21C21 14.8838 20.7893 14.3751 20.4142 14L19 15.4142ZM18 13.7224C18 14.1653 18.176 14.5901 18.4892 14.9034L19.9034 13.4892C19.9653 13.551 20 13.6349 20 13.7224H18ZM20 10C20 5.58171 16.4183 1.99999 12 2L12 4C15.3137 3.99999 18 6.68629 18 10H20ZM6 10C6 6.6863 8.68628 4.00001 12 4L12 2C7.58171 2.00001 4 5.58173 4 10H6ZM5.51082 14.9034C5.82404 14.5902 6 14.1654 6 13.7224H4C4 13.635 4.03475 13.5511 4.09661 13.4892L5.51082 14.9034ZM5 15.4142H5L3.58579 14C3.21071 14.3751 3 14.8838 3 15.4142H5ZM5 16H3C3 17.1046 3.89543 18 5 18V16ZM19 18C20.1046 18 21 17.1046 21 16H19V18Z"
-                  fill="#009778"/>
-         </svg></a>
-            <a href="#"><svg width="6vh" height="6vh" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.25 26.25C6.25 21.4175 10.1675 17.5 15 17.5C19.8325 17.5 23.75 21.4175 23.75 26.25" stroke="#009778" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15 13.75C17.7614 13.75 20 11.5114 20 8.75C20 5.98858 17.7614 3.75 15 3.75C12.2386 3.75 10 5.98858 10 8.75C10 11.5114 12.2386 13.75 15 13.75Z" stroke="#009778" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg></a>
-        <!--endif-->
+<!DOCTYPE html>
+<!-- Coding by CodingLab | www.codinglabweb.com -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!----===== Boxicons CSS ===== -->
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+
+    <!--<title>Dashboard Sidebar Menu</title>-->
+</head>
+<body>
+<nav class="sidebar close">
+    <header>
+        <div class="image-text">
+            <span class="image">D0</span>
+
+            <div class="text logo-text">
+                <span class="name">DevsOnly</span>
+            </div>
+        </div>
+
+        <i class='bx bx-chevron-right toggle'></i>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <ul class="menu-links">
+<!--if user is not login
+                <li class="nav-link">
+                    <a href="#">
+                        <i class='bx bx-log-in icon'></i>
+                        <span class="text nav-text">Login</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="#">
+                        <i class='bx bx-user-plus icon'></i>
+                        <span class="text nav-text">Registration</span>
+                    </a>
+                </li>
+                -->
+<!--else-->
+                <li class="nav-link">
+                    <a href="#">
+                        <i class='bx bx-user icon'></i>
+                        <span class="text nav-text">German Borovets</span><!--username-->
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="#">
+                        <i class='bx bx-home icon'></i>
+                        <span class="text nav-text">Home</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="#">
+                        <i class='bx bx-bell icon'></i>
+                        <span class="text nav-text">Notifications</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="#">
+                        <i class='bx bx-message icon'></i>
+                        <span class="text nav-text">Messenger</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="#">
+                        <i class='bx bx-heart icon'></i>
+                        <span class="text nav-text">Likes</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="bottom-content">
+            <li class="">
+                <a href="#">
+                    <i class='bx bx-log-out icon'></i>
+                    <span class="text nav-text">Logout</span>
+                </a>
+            </li>
+<!--endif-->
+            <li class="mode">
+                <div class="sun-moon">
+                    <i class='bx bx-moon icon moon'></i>
+                    <i class='bx bx-sun icon sun'></i>
+                </div>
+                <span class="mode-text text">Dark mode</span>
+
+                <div class="toggle-switch">
+                    <span class="switch"></span>
+                </div>
+            </li>
+
+        </div>
     </div>
-</div>
+
+</nav>
+<script>
+    const body = document.querySelector('body'),
+        sidebar = body.querySelector('nav'),
+        toggle = body.querySelector(".toggle"),
+        searchBtn = body.querySelector(".search-box"),
+        modeSwitch = body.querySelector(".toggle-switch"),
+        modeText = body.querySelector(".mode-text");
+
+
+    toggle.addEventListener("click", () => {
+        sidebar.classList.toggle("close");
+    })
+
+    modeSwitch.addEventListener("click", () => {
+        body.classList.toggle("dark");
+
+        if (body.classList.contains("dark")) {
+            modeText.innerText = "Light mode";
+        } else {
+            modeText.innerText = "Dark mode";
+
+        }
+    });
+</script>
+
+</body>
+</html>
