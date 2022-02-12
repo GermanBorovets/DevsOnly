@@ -5,9 +5,9 @@ from django.contrib import messages
 
 from src.common import from_get_id
 from src.logger import init_logger
-from src.user import user_exists, userset_exists, get_accesses
+# from src.user import user_exists, userset_exists, get_accesses, is_userset_owner
 from main.models import User, UserSettings
-
+# from main.forms.user import EditProfileForm
 
 logger = init_logger(__name__)
 
@@ -22,6 +22,21 @@ def profile_page(request) -> None:
         accesses: Dict[str, int] = get_accesses(user)
 
         user_data = [
+            {
+                'label': 'First name',
+                'access': 1,
+                'data': user.first_name
+            },
+            {
+                'label': 'Last name',
+                'access': 1,
+                'data': user.last_name
+            },
+            {
+                'label': 'Username',
+                'access': 1,
+                'data': user.username
+            },
             {
                 'label': 'Date of birth',
                 'access': accesses['date_of_birth'],
