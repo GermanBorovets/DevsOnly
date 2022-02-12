@@ -1,3 +1,36 @@
-body{
-    background-color: #060606;
+.wellcum_logo {
+    color: #009778;
+    font-family: Consolas;
+    font-style: normal;
+    font-weight: normal;
+    margin: 0;
+    border: 3px solid #009778;
+    border-radius: 5px;
+    font-size: 8vh;
+}
+
+.wellcum_text {
+    text-overflow: ellipsis;
+    margin: 3px 0;
+    font-size: 8vh;
+}
+
+.wellcum {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: start;
+    margin: 10px;
+    max-width: 1000px;
+}
+
+.mainLogo{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: inherit;
 }
