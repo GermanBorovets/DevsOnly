@@ -49,5 +49,5 @@ class RegistrationForm(forms.Form):
 
         if password and password != double_password:
             self.add_error('password',
-                           ValidationError('Passwords do not match',
+                           ValidationError('Passwords do not match.',
                                            code='no match'))

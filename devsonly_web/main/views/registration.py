@@ -39,7 +39,7 @@ def registration_page(request) -> None:
             user.save()
 
             user_settings = UserSettings(user=User.objects.get(username=user.username),
-                                         sex=cd['pronouns'] + '/' + cd['pronunciation'],
+                                         sex=f'{cd["pronouns"]}/{cd["pronunciation"]}',
                                          )
             user_settings.save()
 
@@ -48,7 +48,7 @@ def registration_page(request) -> None:
             for field in form:
                 if field.errors:
                     for error in field.errors:
-                        messages.error(request, error)
+                        messages.error(request, f'{field.label}: {error}')
     else:
         form = RegistrationForm()
     context = {'pagename': 'Registration',

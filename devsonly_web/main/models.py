@@ -23,6 +23,7 @@ class UserSettings(models.Model):
     profile_picture = models.CharField(max_length=255, null=True)
     status = models.CharField(max_length=255, null=True)
     sex = models.CharField(max_length=255)
+    # Format: they/them/pronunciation
     parts_access = models.CharField(max_length=255, default='1111111')
     # Contains string with 0 and 1 each of which means an ability of profile parts to be seen
     hard_skills = models.TextField(null=True)
