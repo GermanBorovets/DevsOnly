@@ -1,0 +1,157 @@
+.main_profile_container {
+    width: 95vw;
+    height: 95vh;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* .main_profile_container div {
+    margin: 5vh 5vw;
+} */
+
+.profile_info_container {
+    width: 60vw;
+    height: 60vh;
+    margin: 4vw;
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */    
+}
+
+/* Менюшка слева */
+.nav {
+    width: 25vw;
+    min-width: 200px;
+    max-width: 300px;
+    height: 20vh;
+    max-height: 250px;
+    margin: 4vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav_btn {
+    background: #262829;
+    border-radius: 5px;
+    width: 15vw;
+    min-width: 200px;
+    max-width: 250px;
+    margin-top: 3%;
+    text-align: left;
+    list-style-type: none;
+    padding: 3px;
+    transition: 0.3s;
+}
+
+.nav_btn:hover{
+    background: #323333;
+}
+
+.nav_btn a {
+    font-family: Consolas;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 19px;
+    line-height: 30px;
+    color: rgba(241, 241, 241, 0.8);;
+    text-decoration: none;
+}
+
+.nav_btn a i {
+    color: #009778;
+    margin-left: 5px;
+}
+
+/* Блок с картинков и соцсетями */
+.left_info_cont{
+    /* background: red;  */
+    width: 200px;
+    min-width: 200px; 
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.left_info_cont img{
+    width: 200px;
+    height:200px;
+    margin-bottom: 1%;
+}
+
+.left_info_cont p{
+    font-family: Consolas;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 23px;
+    color: #FFFFFF;
+    margin: 5px 0;
+    text-align: left;
+}
+
+.soc_icons{
+    display: flex;
+    flex-direction: row;
+}
+
+.soc_link{
+    border: 3px solid #009778;
+    border-radius: 100px;
+    width: 60px;
+    height: 60px;
+    margin: 1%;
+}
+
+.right_info_block{
+    /* background: red; */
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left: 5%;
+}
+
+.user_inf_p {
+    font-family: Consolas;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    /* line-height: 30px; */
+    color: #FFFFFF;
+    margin: 10px 0;
+}
+
+.user_tag{
+    font-family: Consolas;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 23px;
+    /* line-height: 30px; */
+    color: rgba(255, 255, 255, 0.7);
+    margin: 10px 0;
+}
+
+.edit_profile_btn{
+    margin-top: 20px;
+    background: #009778;
+    border-radius: 5px;
+    padding: 7px;
+}
+
+.edit_profile_btn a{
+    font-family: Consolas;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 19px;
+    color: #1E1E1E;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.edit_profile_btn:hover a{
+    color: #FFFFFF;
+}
