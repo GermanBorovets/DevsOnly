@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Devs0n1y</title>
+    </head>
+    <body>
+        <header>
+            <h3>{{ pagename }}</h3>
+        </header>
+        <hr>
+        <form action="/registration/" method="POST">
+            {% csrf_token %}
+
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% for field in form %}
+                {% if field.field.required %}
+                    <font color="red">*</font>
+                {% endif %}
+                <label>{{ field.label }}</label>:
+                <br>
+                {{ field }}
+                <br><br>
+            {% endfor %}
+            <input type="submit" value="Create account">
+        </form>
+    </body>
+</html>
