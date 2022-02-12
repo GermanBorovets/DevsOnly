@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <form action = '/login/' method = 'POST'>
+        {% csrf_token %}
+        {% for item in form %}
+        {{ item.label }} {{ item }} <br>
+        {% endfor %}
+      <input type = 'submit' value = 'Войти'>
+    </form>
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+</body>
+</html>
