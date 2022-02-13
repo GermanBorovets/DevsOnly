@@ -17,6 +17,7 @@
     --toggle-color: #009778;
     --text-color: #009778;
     --all-text: #fff;
+    --block: #2e2e2e;
 
     /* ====== Transition ====== */
     --tran-03: all 0.2s ease;
@@ -51,7 +52,15 @@ body.dark{
     --primary-color-light: #EFEFEF;
     --toggle-color: #009778;
     --text-color: #009778;
+    --block: #d9d9d9;
 }
+
+
+.wellcum_block{
+    background-color: var(--block);
+    color: var(--all-text);
+}
+
 
 /* ===== Sidebar ===== */
 .sidebar {
