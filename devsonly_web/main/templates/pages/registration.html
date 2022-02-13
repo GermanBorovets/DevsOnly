@@ -1,35 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Devs0n1y</title>
-    </head>
-    <body>
-        <header>
-            <h3>{{ pagename }}</h3>
-        </header>
-        <hr>
-        <form action="/registration/" method="POST">
-            {% csrf_token %}
+{% extends 'base/base.html' %}
+    {% block content %}
+        <div class="wellcum_bod">
+            <form action="/registration/" method="POST" class="wellcum_block">
+                {% csrf_token %}
 
-            {% if messages %}
-                <ul>
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-
-            {% for field in form %}
-                {% if field.field.required %}
-                    <font color="red">*</font>
+                {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
-                <label>{{ field.label }}</label>:
-                <br>
-                {{ field }}
+                <h1 style="font-weight: 600; margin-bottom: 20px; white-space: wrap;">Registration</h1>
+                <input type="text" name="username" placeholder="username" maxlength="16" required="" id="id_username" class="wellcum_imp_1">
                 <br><br>
-            {% endfor %}
-            <input type="submit" value="Create account">
-        </form>
-    </body>
-</html>
+                <input type="email" name="email" placeholder="email" required="" id="id_email" class="wellcum_imp">
+                <br>
+                <input type="password" name="password" placeholder="password" maxlength="24" required="" id="id_password" class="wellcum_imp">
+                <br>
+                <input type="password" name="double_password" placeholder="password again" maxlength="24" required="" id="id_double_password" class="wellcum_imp">
+                <br>
+                <input type="text" name="first_name" placeholder="first name" maxlength="24" id="id_first_name" class="wellcum_imp">
+                <br>
+                <input type="text" name="last_name" placeholder="last name" maxlength="24" id="id_last_name" class="wellcum_imp">
+                <br>
+                <input type="text" name="pronunciation" placeholder="pronunciation" maxlength="64" id="id_pronunciation" class="wellcum_imp">
+                <br>
+                <input type="text" name="date_of_birth" placeholder="DD-MM-YY" id="id_date_of_birth" class="wellcum_imp">
+                <br>
+                <input type="text" name="pronouns" placeholder="e.g. they/them" maxlength="16" id="id_pronouns" class="wellcum_imp">
+                <br>
+                <input type="submit" value="Registration" class="wellcum_button">
+            </form>
+        </div>
+    {% endblock %}
