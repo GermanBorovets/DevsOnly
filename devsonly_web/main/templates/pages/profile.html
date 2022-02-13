@@ -5,8 +5,7 @@
 <div class="main_profile_container">
     <div class="profile_info_container">
         <div class="left_info_cont">
-            <img src="https://img.icons8.com/external-vitaliy-gorbachev-blue-vitaly-gorbachev/344/external-anonymous-cryptocurrency-vitaliy-gorbachev-blue-vitaly-gorbachev.png"
-                alt="">
+            <img src="https://img.icons8.com/external-vitaliy-gorbachev-blue-vitaly-gorbachev/344/external-anonymous-cryptocurrency-vitaliy-gorbachev-blue-vitaly-gorbachev.png" alt="">
             <div class="soc_icons">
                 <div class="soc_link"></div>
                 <div class="soc_link"></div>
@@ -16,19 +15,12 @@
             <div class="edit_profile_btn"><a href="#">Редактировать</a></div>
         </div>
         <div class="right_info_block">
-
-            {% for item in user_data %}
-                {% if item.access == 1 %}
-                    <p class="user_inf_p">{{item.label}} : {{ item.data }}</p>
-                {% endif %}
-            {% endfor %}
-
-
-            <!-- <p class="user_tag">#тег пользователя</p>
+            <p class="user_inf_p">Логин</p>
+            <p class="user_tag">#тег пользователя</p>
             <p class="user_inf_p">Имя пользователя</p>
-            <p class="user_inf_p">Фамилия пользователя</p> -->
+            <p class="user_inf_p">Фамилия пользователя</p>
         </div>
-
+        
     </div>
     <div class="nav">
         <li class="nav_btn"><a href="#"><i class="fa-solid fa-newspaper"></i> Новостная стена</a></li>

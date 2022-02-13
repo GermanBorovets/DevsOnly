@@ -68,7 +68,7 @@
 
 /* Блок с картинков и соцсетями */
 .left_info_cont{
-    /* background: red;  */
+    /* background: yellow;   */
     width: 200px;
     min-width: 200px; 
     height: 400px;
@@ -107,8 +107,9 @@
 }
 
 .right_info_block{
-    /* background: red; */
-    width: 30vw;
+    /* background: red;  */
+    width: 40vw;
+    min-height: 60vh;
     display: flex;
     flex-direction: column;
     text-align: left;
