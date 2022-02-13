@@ -80,7 +80,7 @@
 .left_info_cont img{
     width: 200px;
     height:200px;
-    margin-bottom: 1%;
+    margin-bottom: 10px;
 }
 
 .left_info_cont p{
@@ -120,27 +120,27 @@
     font-family: Consolas;
     font-style: normal;
     font-weight: normal;
-    font-size: 30px;
+    font-size: 36px;
     /* line-height: 30px; */
     color: #FFFFFF;
     margin: 10px 0;
 }
+
 
 .user_tag{
     font-family: Consolas;
     font-style: normal;
     font-weight: normal;
     font-size: 23px;
-    /* line-height: 30px; */
     color: rgba(255, 255, 255, 0.7);
     margin: 10px 0;
 }
 
 .edit_profile_btn{
-    margin-top: 20px;
+    margin-top: 5px;
     background: #009778;
     border-radius: 5px;
-    padding: 7px;
+    padding: 7px 20px;
 }
 
 .edit_profile_btn a{

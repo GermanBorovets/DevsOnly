@@ -5,28 +5,36 @@
 <div class="main_profile_container">
     <div class="profile_info_container">
         <div class="left_info_cont">
-            <img src="https://img.icons8.com/external-vitaliy-gorbachev-blue-vitaly-gorbachev/344/external-anonymous-cryptocurrency-vitaliy-gorbachev-blue-vitaly-gorbachev.png" alt="">
+            {% for item in user_data %}
+                {% if item.label == "Profile picture" and item.access == 1 %}
+                    <img src="{{ item.data }}" alt="">
+                {% endif %}
+            {% endfor %}
             <div class="soc_icons">
                 <div class="soc_link"></div>
                 <div class="soc_link"></div>
                 <div class="soc_link"></div>
             </div>
-            <p>Cоц.сети</p>
-            <div class="edit_profile_btn"><a href="#">Редактировать</a></div>
+            <p>Socials</p>
+            <div class="edit_profile_btn"><a href="#">Edit</a></div>
         </div>
         <div class="right_info_block">
-            <p class="user_inf_p">Логин</p>
-            <p class="user_tag">#тег пользователя</p>
-            <p class="user_inf_p">Имя пользователя</p>
-            <p class="user_inf_p">Фамилия пользователя</p>
+            <p class="user_inf_p">{{ first_name }} {{last_name}}</p>
+            <p class="user_inf_p" style="font-size:22px">Nick: <span style="color:#009778">{{ username }}</span></p>
+
+            {% for item in user_data %}
+                {% if item.access == 1 and item.label != "Profile picture" %}
+                    <p class="user_inf_p" style="font-size: 22px">{{item.label}}: <span
+                        style="color:#009778">{{ item.data }}</span></p>
+                {% endif %}
+            {% endfor %}
         </div>
-        
     </div>
     <div class="nav">
-        <li class="nav_btn"><a href="#"><i class="fa-solid fa-newspaper"></i> Новостная стена</a></li>
-        <li class="nav_btn"><a href="#"><i class="fa-solid fa-comment"></i> Мессенджер</a></li>
-        <li class="nav_btn"><a href="#"><i class="fa-solid fa-user-group"></i> Друзья</a></li>
-        <li class="nav_btn"><a href="#"><i class="fa-solid fa-star"></i></i> Рейтинг</a></li>
+        <li class="nav_btn"><a href="#"><i class="fa-solid fa-newspaper"></i> News</a></li>
+        <li class="nav_btn"><a href="#"><i class="fa-solid fa-comment"></i> Messenger</a></li>
+        <li class="nav_btn"><a href="#"><i class="fa-solid fa-user-group"></i> Friends</a></li>
+        <li class="nav_btn"><a href="#"><i class="fa-solid fa-star"></i></i> Rating</a></li>
     </div>
 </div>
 
