@@ -83,3 +83,12 @@ class CommentElement(models.Model):
     # type of element, 0-text, 1-image, 2-media
     text = models.TextField()
     media = models.CharField(max_length=255)
+
+
+class HardSkills(models.Model):
+    tag = models.CharField(max_length=255)
+
+
+class UserSkills(models.Model):
+    user = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
+    skill = models.ForeignKey(to=HardSkills, on_delete=models.CASCADE)
