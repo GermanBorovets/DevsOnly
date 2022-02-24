@@ -11,3 +11,7 @@ def index_page(request) -> None:
     print(type(ip))
 
     return render(request, 'pages/index.html')
+
+
+def posts_page(request) -> None:
+    return render(request, 'pages/posts.html')
