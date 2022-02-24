@@ -1,0 +1,14 @@
+{% extends 'base/base.html' %}
+    {% block content %}
+        <div class="wellcum_bod">
+            <form action="/login/" method="POST" class="wellcum_block">
+                {% csrf_token %}
+                <h1 class="Reg_logo">Login</h1>
+                <input type="email" name="email" placeholder="email" required="" id="id_email" class="wellcum_imp">
+                <br>
+                <input type="password" name="password" placeholder="password" maxlength="24" required="" id="id_password" class="wellcum_imp">
+                <br>
+                <input type="submit" value="Login" class="wellcum_button">
+            </form>
+        </div>
+    {% endblock %}
