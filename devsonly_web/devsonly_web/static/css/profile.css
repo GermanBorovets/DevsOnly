@@ -4,20 +4,15 @@
     margin: auto;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
 }
 
-/* .main_profile_container div {
-    margin: 5vh 5vw;
-} */
-
-.profile_info_container {
+.profile_info_container {   
     width: 60vw;
     height: 60vh;
     margin: 4vw;
     display: flex;
     flex-direction: row;
-    /* justify-content: space-between; */    
 }
 
 /* Менюшка слева */
@@ -67,8 +62,7 @@
 }
 
 /* Блок с картинков и соцсетями */
-.left_info_cont{
-    /* background: yellow;   */
+.left_info_cont{ 
     width: 200px;
     min-width: 200px; 
     height: 400px;
@@ -107,7 +101,6 @@
 }
 
 .right_info_block{
-    /* background: red;  */
     width: 40vw;
     min-height: 60vh;
     display: flex;
@@ -121,7 +114,6 @@
     font-style: normal;
     font-weight: normal;
     font-size: 36px;
-    /* line-height: 30px; */
     color: #FFFFFF;
     margin: 10px 0;
 }
