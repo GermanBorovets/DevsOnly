@@ -17,8 +17,58 @@
     flex-direction: column;
     text-align: center;
     position: absolute;
-    left: 1.5vw;
+    top: 2%;
+    left: 2%;
 }
+
+.sorted_text{
+    font-size: 22px;
+    text-align: left;
+}
+
+.drop_down_menu{
+    background: #262829;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border-radius: 7px;
+}
+
+.main-item{
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.sub-menu { 
+    background: #1d1e1f;
+    display: none; 
+    list-style: none;
+} 
+
+.sub-menu li{ 
+    margin-left: 5px;
+    color: rgba(255, 255, 255, 0.6);
+} 
+
+.sub-menu li a{ 
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    transition: 0.3s;
+} 
+
+.sub-menu li a:hover{ 
+    text-decoration: none;
+    color: #009778;
+}
+
+.main-item:focus ~ .sub-menu, 
+
+.main-item:active ~ .sub-menu, 
+
+.sub-menu:hover { 
+   display: block; 
+} 
 
 /* Блок с постами */
 .posts_container{
@@ -34,37 +84,49 @@
     padding: 0 5%;
 }
 
-.sorted_text{
-    font-size: 22px;
-}
-
 /* Блок поста */
 .post{
     position: relative;
-    width: 100%;
-    height: 30%;
+    width: 95%;
+    max-width: 80%;
+    height: 60%;
     display: flex;
     flex-direction: column;
     border-radius: 7px;
     background: #262829;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    margin: 4% 0;
+    margin: 2% 0;
+    justify-content: center;
 }
 
 /* Юзертэг в посте */
 .users_tag{
     margin-left: 3%;
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; */
     color: rgba(241, 241, 241, 0.75);
     font-size: 14px;
 }
 
+/* Текст в посте */
+.post_text{
+    margin-left: 3%;
+    margin-right: 3%;
+    font-size: 14px;
+}
+
 /* Картинка в посте */
-.post_image{
+.post_image_cont{
+    /* background: red; */
     width: 95%;
-    height: 50%;
-    border-radius: 7px;
+    height: 60%;
     align-self: center;
+}
+
+.post_image{
+    width:100%;
+    height:100%;
+    border-radius: 7px;
+    image-rendering: optimizeQuality;
 }
 
 /* Рейтинг в посте */
@@ -86,7 +148,6 @@
 }
 
 .rating_counter{
-    color: #DE1717;
     font-size: 14px;
 }
 
@@ -94,6 +155,7 @@
 .add_comment_form{
     margin-left: 3%;
     margin-top: 5px;
+    margin-bottom: 5%;
 }
 
 .add_comment_input{
@@ -108,7 +170,7 @@
 }
 
 .add_comment_button{
-    width: 10vh;
+    width: 12vh;
     height: 4vh;
     background-color: transparent;
     border-radius: 5px;
@@ -124,8 +186,6 @@
     background-color: #009778;
 }
 
-/* Добавление коммента */
-
 /* Smartphones  */
 @media only screen and (min-width : 280px) and (max-width : 480px) {
     .main_containe{
@@ -134,27 +194,47 @@
         justify-content: center;
     }
     .posts_container{
-        width: 90%;
-        margin-top: 32%;
+        width: 100%;
+        margin-top: 35%;
     }
 
     .sorter{
         position: absolute;
         top: 0%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-0%);
-        width: 100%;
-        max-width: 90%;
+        left: 45%;
+        transform: translateX(-45%) translateY(-0%);
+        width: 73%;
+        max-width: none;
         height: 10vh;
         margin-top: 5px;
+    }
+
+    .post{
+        height: 80%;
+        margin: 4% 8%;
+        justify-content: center;
+    }
+
+    .add_comment_button{
+        width: calc(10vh + 8px);
+        font-size: 11px;
+    }
+
+    .add_comment_input{
+        width: 50%;
+        font-size: 11px;
+    }
+
+    .add_comment_form{
+        margin-bottom: 5px;
     }
 }
 
 /* iPads */
 @media only screen and (min-width: 481px) and (max-width: 1024px) {
     .posts_container{
-        width: 90%;
-        margin-top: 22%;
+        width: 85%;
+        margin-top: 23%;
     }
     
     .sorter{
@@ -166,5 +246,10 @@
         max-width: 90%;
         height: 10%;
         margin: 2% 0;
+    }
+
+    .post{
+        height: 90%;
+        justify-content: center;
     }
 }
