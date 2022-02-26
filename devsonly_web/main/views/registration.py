@@ -6,8 +6,8 @@ from django.contrib.auth.hashers import make_password
 
 from main.models import User, UserSettings
 from main.forms.registration import RegistrationForm
-
 from src.common import get_ip
+from src.logger import init_logger
 
 
 def index_page(request) -> None:
@@ -23,6 +23,8 @@ def index_page(request) -> None:
 
 
 def registration_page(request) -> None:
+    logger = init_logger(__name__)
+
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -39,10 +41,11 @@ def registration_page(request) -> None:
             user.save()
 
             user_settings = UserSettings(user=User.objects.get(username=user.username),
-                                         sex=f'{cd["pronouns"]}/{cd["pronunciation"]}',
+                                         sex=f'{cd["subjective"]}/{cd["objective"]}',
                                          )
             user_settings.save()
 
+            logger.info('Successful registration.')
             return redirect('/')
         else:
             for field in form:

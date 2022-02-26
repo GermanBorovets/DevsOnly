@@ -20,15 +20,35 @@
                 </ul>
             {% endif %}
 
-            {% for field in form %}
-                {% if field.field.required %}
-                    <font color="red">*</font>
-                {% endif %}
-                <label>{{ field.label }}</label>:
-                <br>
-                {{ field }}
-                <br><br>
-            {% endfor %}
+            <!--Asterix means that the field is required-->
+            <font color="red">*</font>
+            {{ form.username.label }}: {{ form.username }}
+            <br>
+
+            <font color="red">*</font>
+            {{ form.email.label }}: {{ form.email }}
+            <br>
+
+            <font color="red">*</font>
+            {{ form.password.label }}: {{ form.password }}
+            <br>
+
+            <font color="red">*</font>
+            {{ form.double_password.label }}: {{ form.double_password }}
+            <hr>
+
+            {{ form.first_name.label }}: {{ form.first_name }}
+            <br>
+
+            {{ form.last_name.label }}: {{ form.last_name }}
+            <br>
+
+            {{ form.date_of_birth.label }}: {{ form.date_of_birth }}
+            <br>
+
+            Pronouns: {{ form.subjective }} / {{ form.objective }}
+            <hr>
+
             <input type="submit" value="Create account">
         </form>
     </body>

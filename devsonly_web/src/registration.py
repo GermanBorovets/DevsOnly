@@ -47,13 +47,3 @@ def validate_birth_date(birth_date: date) -> None:
     if birth_date > date.today() or birth_date < date(1900, 1, 1):
         raise ValidationError('Date of birth is inauthentic.',
                               code='invalid date')
-
-
-def validate_pronouns(pros: str) -> None:
-    if  pros.find('/') == -1 or pros.find('/') != pros.rfind('/'):
-        raise ValidationError('Format must be: "they/them".',
-                              code='invalid pros')
-    for char in pros:
-        if char != '/' and not char.isalpha():
-            raise ValidationError('Format must be: "they/them".',
-                                  code='invalid pros')

@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 from src.registration import (validate_letters, validate_username,
                               validate_email, validate_password,
-                              validate_birth_date, validate_pronouns)
+                              validate_birth_date)
 
 
 class RegistrationForm(forms.Form):
@@ -27,20 +27,23 @@ class RegistrationForm(forms.Form):
                                 max_length=24,
                                 validators=[validate_letters],
                                 required=False)
-    pronunciation = forms.CharField(label='Pronunciation',
-                                     max_length = 64,
-                                     required=False)
     date_of_birth = forms.DateField(label='Date of birth',
                                     widget=forms.DateInput(attrs={'placeholder': 'DD-MM-YY'}),
                                     input_formats=['%d-%m-%Y'],
                                     validators=[validate_birth_date],
                                     required=False)
-    pronouns = forms.CharField(label='Pronouns',
+    subjective = forms.CharField(label='Subjective',
                                max_length = 16,
-                               widget=forms.TextInput(attrs={'placeholder': 'e.g. they/them',
+                               widget=forms.TextInput(attrs={'placeholder': 'they',
                                                              'class': 'form-control'}),
-                               validators=[validate_pronouns],
+                               validators=[validate_letters],
                                required=False)
+    objective = forms.CharField(label='Objective',
+                                 max_length=16,
+                                 widget=forms.TextInput(attrs={'placeholder': 'them',
+                                                               'class': 'form-control'}),
+                                 validators=[validate_letters],
+                                 required=False)
 
     def clean(self):
         cleaned_data = super().clean()
