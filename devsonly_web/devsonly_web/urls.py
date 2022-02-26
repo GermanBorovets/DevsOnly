@@ -17,8 +17,11 @@ from django.contrib import admin
 from django.urls import path
 
 from main.views.index import index_page
+from main.views.user import author_rating_page, team_member_rating_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index_page),
+    path('rating/author/', author_rating_page),
+    path('rating/member/', team_member_rating_page)
 ]

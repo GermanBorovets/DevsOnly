@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from main.models import User
+
 
 def index_page(request) -> None:
 
@@ -11,3 +13,19 @@ def index_page(request) -> None:
     print(type(ip))
 
     return render(request, 'pages/index.html')
+
+
+def author_rating_page(request):
+    context = {
+        'pagename': 'Author rating',
+        'author_rating': User.objects.all()
+    }
+    return render(request, 'pages/author_rating.html', context)
+
+
+def team_member_rating_page(request):
+    context = {
+        'pagename': 'Member rating',
+        'team_member_rating': User.objects.all()
+    }
+    return render(request, 'pages/team_member_rating.html', context)

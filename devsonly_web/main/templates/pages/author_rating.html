@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ pagename }}</title>
+</head>
+<body>
+    {% for user in author_rating %}
+        {{ user.id }}
+        {{ user.author_rating }}
+        <br>
+    {% endfor %}
+</body>
+</html>
