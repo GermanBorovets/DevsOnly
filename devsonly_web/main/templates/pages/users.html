@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Devs0n1y</title>
+    </head>
+    <body>
+        <header>
+            <h2>{{ pagename }}</h2>
+            <hr>
+        </header>
+
+        <textarea id="skills_input" placeholder="Write skill you need here..."></textarea>
+        <br>
+
+        <form action="/users/list/">
+            {{ skills_form.requested_skills }}
+            <input type="submit" value="Search">
+        </form>
+        <hr>
+
+        <!--Click on keyword to apply it-->
+        <h3>Keywords:</h3>
+        <ul id="keywords_list"></ul>
+        <hr>
+
+        <!--Click on tag to delete it-->
+        <h3>Tags:</h3>
+        <ul id="tags_list"></ul>
+        <hr>
+
+        <!--Found users-->
+        {% if users %}
+            <h3>Users:</h3>
+            <ul>
+                {% for user in users %}
+                    <li>{{ user }}</li>
+                {% endfor %}
+            </ul>
+            <hr>
+        {% endif %}
+
+        <script>
+            document.getElementById('id_requested_skills').value = '';
+            var keywords = new Set();
+
+            <!--Collect existing tags-->
+            var tags = [
+                {% for skill in skills %}
+                    '{{ skill }}',
+                {% endfor %}
+            ]
+
+            <!--Add event for the input field-->
+            function skillsOnInput(event){
+                let word = document.getElementById('skills_input').value;
+                let requested_skills = document.getElementById('id_requested_skills').value;
+
+                <!--Formatting input-->
+                if (word.includes('\n')){
+                    word = word.replace(/\n/g, ' ');
+                }
+                if (word.startsWith(' ')){
+                    word = word.replace(/ /g, '');
+                }
+                document.getElementById('skills_input').value = word;
+
+                <!--Try to add requested tag-->
+                if (word.includes(' ')){
+                    <!--If word is written, try to add it-->
+                    word = word.slice(0, word.indexOf(' '));
+                    if (!requested_skills.includes(word) && window.tags.includes(word)){
+                        let tag = document.createElement('li');
+                        tag.id = `${word}_tag`;
+                        tag.addEventListener('click', () => deleteOnClick(tag));
+                        tag.innerHTML = word;
+                        document.getElementById('tags_list').append(tag);
+                        document.getElementById('id_requested_skills').value += `${word} `;
+                    }
+                    document.getElementById('skills_input').value = document.getElementById('skills_input').value.replace(`${word} `, '');
+                    deleteKeyword(word);
+                    word = document.getElementById('skills_input').value.slice(0, document.getElementById('skills_input').value.indexOf(' '));
+                }
+                console.log(`Requested skills: ${document.getElementById('id_requested_skills').value}`);
+                console.log(`Current word: ${word}`);
+
+                <!--Search for matching tags-->
+                for (let tag of window.tags){
+                    if (word != '' && tag.startsWith(word) && !window.keywords.has(tag)){
+                        <!--If found matching tag, add keyword-->
+                        window.keywords.add(tag);
+                        let keyword = document.createElement('li');
+                        keyword.id = `${tag}_keyword`;
+                        keyword.addEventListener('click', () => addOnClick(keyword));
+                        keyword.innerHTML = tag;
+                        document.getElementById('keywords_list').append(keyword);
+                        console.log(`Keywords: ${tag}`);
+                    }else if (!tag.startsWith(word) && window.keywords.has(tag)){
+                        <!--Otherwise, delete unwanted keyword-->
+                        deleteKeyword(tag);
+                    }
+                }
+            }
+
+            <!--Deleting event for unwanted tags-->
+            function deleteOnClick(elem){
+                let requested_skills = document.getElementById('id_requested_skills').value;
+                let tag = elem.id.slice(0, elem.id.indexOf('_'));
+                document.getElementById('id_requested_skills').value = requested_skills.replace(tag, '');
+                elem.remove()
+                console.log(`Deleting tag: ${tag}`);
+                console.log(`Requested skills: ${document.getElementById('id_requested_skills').value}`);
+            }
+
+            <!--Adding event for satisfying keywords-->
+            function addOnClick(elem){
+                let requested_skills = document.getElementById('id_requested_skills').value;
+                let word = elem.id.slice(0, elem.id.indexOf('_'));
+                if (!requested_skills.includes(word)){
+                    <!--If tag is unique, add-->
+                    let tag = document.createElement('li');
+                    tag.id = `${word}_tag`;
+                    tag.addEventListener('click', () => deleteOnClick(tag));
+                    tag.innerHTML = word;
+                    document.getElementById('tags_list').append(tag);
+                    document.getElementById('id_requested_skills').value += `${word} `;
+                }
+                document.getElementById('skills_input').value = '';
+                window.keywords.clear();
+                document.getElementById('keywords_list').innerHTML = null;
+                console.log(`Applying keyword: ${word}`);
+                console.log(`Requested skills: ${document.getElementById('id_requested_skills').value}`);
+            }
+
+            <!--Delete keyword function-->
+            function deleteKeyword(word){
+                window.keywords.delete(word);
+                if (document.getElementById(`${word}_keyword`)){
+                    document.getElementById(`${word}_keyword`).remove();
+                }
+                console.log(`Deleting keyword: ${word}`);
+            }
+
+            document.getElementById('skills_input').addEventListener('input', skillsOnInput);
+        </script>
+    </body>
+</html>
