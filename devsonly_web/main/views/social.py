@@ -27,6 +27,7 @@ def users_page(request) -> None:
     # Collecting existing skill tags
     for skill in HardSkills.objects.all():
         skills.append(skill.tag)
+    print(skills)
 
     if skills_form.is_valid():
         requested_skills = skills_form.cleaned_data['requested_skills'].split()

@@ -41,35 +41,33 @@
         {% endif %}
 
         <script>
-            document.getElementById('id_requested_skills').value = '';
-            var keywords = new Set();
+            'use strict';
 
-            <!--Collect existing tags-->
-            var tags = [
+            document.getElementById('id_requested_skills').value = '';
+            let keywords = new Set();
+
+            // Collect existing tags
+            let tags = [
                 {% for skill in skills %}
                     '{{ skill }}',
                 {% endfor %}
             ]
 
-            <!--Add event for the input field-->
+            // Add event for the skills input field
             function skillsOnInput(event){
-                let word = document.getElementById('skills_input').value;
-                let requested_skills = document.getElementById('id_requested_skills').value;
+                let word = getValue('skills_input');
+                let requested_skills = getValue('id_requested_skills');
 
-                <!--Formatting input-->
-                if (word.includes('\n')){
-                    word = word.replace(/\n/g, ' ');
-                }
-                if (word.startsWith(' ')){
-                    word = word.replace(/ /g, '');
-                }
+                // Format input
+                word = word.includes('\n') ? word.replace(/\n/g, ' '): word;
+                word = word.startsWith(' ') ? word.replace(/ /g, ''): word;
                 document.getElementById('skills_input').value = word;
 
-                <!--Try to add requested tag-->
+                // Try to add requested tag
                 if (word.includes(' ')){
-                    <!--If word is written, try to add it-->
+                    // If word is written, try to add it
                     word = word.slice(0, word.indexOf(' '));
-                    if (!requested_skills.includes(word) && window.tags.includes(word)){
+                    if (!requested_skills.includes(word) && tags.includes(word)){
                         let tag = document.createElement('li');
                         tag.id = `${word}_tag`;
                         tag.addEventListener('click', () => deleteOnClick(tag));
@@ -77,47 +75,47 @@
                         document.getElementById('tags_list').append(tag);
                         document.getElementById('id_requested_skills').value += `${word} `;
                     }
-                    document.getElementById('skills_input').value = document.getElementById('skills_input').value.replace(`${word} `, '');
+                    document.getElementById('skills_input').value = getValue('skills_input').replace(`${word} `, '');
                     deleteKeyword(word);
-                    word = document.getElementById('skills_input').value.slice(0, document.getElementById('skills_input').value.indexOf(' '));
+                    word = getValue('skills_input').slice(0, getValue('skills_input').indexOf(' '));
                 }
-                console.log(`Requested skills: ${document.getElementById('id_requested_skills').value}`);
+                console.log(`Requested skills: ${getValue('id_requested_skills')}`);
                 console.log(`Current word: ${word}`);
 
-                <!--Search for matching tags-->
-                for (let tag of window.tags){
-                    if (word != '' && tag.startsWith(word) && !window.keywords.has(tag)){
-                        <!--If found matching tag, add keyword-->
-                        window.keywords.add(tag);
+                // Search for matching tags
+                for (let tag of tags){
+                    if (word != '' && tag.startsWith(word) && !keywords.has(tag)){
+                        // If found matching tag, add keyword
+                        keywords.add(tag);
                         let keyword = document.createElement('li');
                         keyword.id = `${tag}_keyword`;
                         keyword.addEventListener('click', () => addOnClick(keyword));
                         keyword.innerHTML = tag;
                         document.getElementById('keywords_list').append(keyword);
                         console.log(`Keywords: ${tag}`);
-                    }else if (!tag.startsWith(word) && window.keywords.has(tag)){
-                        <!--Otherwise, delete unwanted keyword-->
+                    }else if ((word == '' || !tag.startsWith(word)) && keywords.has(tag)){
+                        // Otherwise, delete unwanted keyword
                         deleteKeyword(tag);
                     }
                 }
             }
 
-            <!--Deleting event for unwanted tags-->
+            // Deleting event for unwanted tags
             function deleteOnClick(elem){
-                let requested_skills = document.getElementById('id_requested_skills').value;
+                let requested_skills = getValue('id_requested_skills');
                 let tag = elem.id.slice(0, elem.id.indexOf('_'));
                 document.getElementById('id_requested_skills').value = requested_skills.replace(tag, '');
                 elem.remove()
                 console.log(`Deleting tag: ${tag}`);
-                console.log(`Requested skills: ${document.getElementById('id_requested_skills').value}`);
+                console.log(`Requested skills: ${getValue('id_requested_skills')}`);
             }
 
-            <!--Adding event for satisfying keywords-->
+            // Adding event for satisfying keywords
             function addOnClick(elem){
-                let requested_skills = document.getElementById('id_requested_skills').value;
+                let requested_skills = getValue('id_requested_skills');
                 let word = elem.id.slice(0, elem.id.indexOf('_'));
                 if (!requested_skills.includes(word)){
-                    <!--If tag is unique, add-->
+                    // If tag is unique, add
                     let tag = document.createElement('li');
                     tag.id = `${word}_tag`;
                     tag.addEventListener('click', () => deleteOnClick(tag));
@@ -126,19 +124,22 @@
                     document.getElementById('id_requested_skills').value += `${word} `;
                 }
                 document.getElementById('skills_input').value = '';
-                window.keywords.clear();
+                keywords.clear();
                 document.getElementById('keywords_list').innerHTML = null;
                 console.log(`Applying keyword: ${word}`);
-                console.log(`Requested skills: ${document.getElementById('id_requested_skills').value}`);
+                console.log(`Requested skills: ${getValue('id_requested_skills')}`);
             }
 
-            <!--Delete keyword function-->
             function deleteKeyword(word){
-                window.keywords.delete(word);
+                keywords.delete(word);
                 if (document.getElementById(`${word}_keyword`)){
                     document.getElementById(`${word}_keyword`).remove();
                 }
                 console.log(`Deleting keyword: ${word}`);
+            }
+
+            function getValue(id){
+                return document.getElementById(id).value;
             }
 
             document.getElementById('skills_input').addEventListener('input', skillsOnInput);
