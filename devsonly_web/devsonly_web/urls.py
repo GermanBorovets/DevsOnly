@@ -19,9 +19,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from main.views.index import index_page
+<<<<<<< HEAD
 from main.views.registration import login_page
 from main.views.registration import registration_page
 from main.views.social import add_post_page
+=======
+from main.views.user import author_rating_page, team_member_rating_page
+>>>>>>> feature/ratings/backend
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,5 +39,11 @@ urlpatterns = [
     path('post/add/',
          add_post_page,
          name='add_post'),
+    path('rating/author/',
+         author_rating_page,
+         name='author_rating'),
+    path('rating/member/',
+         team_member_rating_page,
+         name='team_member_rating')
 ] + static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)
