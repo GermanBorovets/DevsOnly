@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Devs0n1y</title>
+</head>
+<body>
+    <header>
+        <h2>{{ pagename }}</h2>
+        <hr>
+    </header>
+    <h3>Post:</h3>
+
+    <p>Text: {{ post.text }}</p>
+    <hr>
+
+     {% if images %}
+        {% for image in images %}
+            <p>{{ image.name }}</p>
+            <img src="{{ image.file.url }}">
+            <br>
+        {% endfor %}
+    {% else %}
+        <p>Upload image:</p>
+    {% endif %}
+    <hr>
+
+    {% if audios %}
+        {% for audio in audios %}
+            <p>{{ audio.name }} </p>
+            <audio controls>
+                <source src="{{ audio.file.url }}">
+            </audio>
+            <br>
+        {% endfor %}
+    {% else %}
+        <p>Upload audio: </p>
+    {% endif %}
+    <hr>
+
+    {% if videos %}
+        <p>{{ video.name }}</p>
+        {% for video in videos %}
+            <video controls>
+                <source src="{{ video.file.url }}">
+            </video>
+            <br>
+        {% endfor %}
+    {% else %}
+        <p>Upload video: </p>
+    {% endif %}
+    <hr>
+
+    {% if files %}
+        {% for file in files %}
+            <a href="{{ file.file.url }}">
+                {{ file.name }}
+            </a>
+            <br>
+        {% endfor %}
+    {% else %}
+        <p>Upload file: </p>
+    {% endif %}
+    <hr>
+
+</body>
+</html>

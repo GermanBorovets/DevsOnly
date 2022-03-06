@@ -1,11 +1,12 @@
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import render
 from django.contrib import messages
 
 from src.logger import init_logger
-from src.social import filetype
+from src.social import filetype, filename
 from main.models import Post, PostMedia
 from main.forms.social import PostForm
 
@@ -128,3 +129,43 @@ def users_page(request) -> None:
                     'skills': skills
                     })
     return render(request, 'pages/users.html', context)
+
+@login_required
+def edit_post_page(request, post_id):
+    context = {}
+    logger = init_logger(__name__)
+    try:
+        post = Post.objects.get(id=post_id)
+    except:
+        raise Http404
+    if post.author == request.user:
+        images = []
+        audios = []
+        videos = []
+        files = []
+        media = PostMedia.objects.filter(post_id=post_id)
+        for file in media:
+            if file.image:
+                images.append({'file': file.image,
+                               'name': filename(file.image)})
+            if file.audio:
+                audios.append({'file': file.audio,
+                               'name': filename(file.audio)})
+            if file.video:
+                images.append({'file': file.video,
+                               'name': filename(file.video)})
+            if file.file:
+                images.append({'file': file.file,
+                               'name': filename(file.file)})
+        print(images, audios, videos, files)
+        context.update({'post': post,
+                        'images': images,
+                        'audios': audios,
+                        'videos': videos,
+                        'files': files
+                        })
+    else:
+        raise Http404
+    context.update({'pagename': 'Edit',
+                    })
+    return render(request, 'pages/edit_post.html', context)
