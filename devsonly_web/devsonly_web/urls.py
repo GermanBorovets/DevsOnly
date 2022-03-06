@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+
 from main.views.index import index_page
 from main.views.registration import login_page
 from main.views.registration import registration_page
+from main.views.social import add_post_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +32,8 @@ urlpatterns = [
     path('login/',
          login_page,
          name='login'),
-]
+    path('post/add/',
+         add_post_page,
+         name='add_post'),
+] + static(settings.MEDIA_URL,
+           document_root=settings.MEDIA_ROOT)

@@ -53,6 +53,7 @@ class StaffPunishments(models.Model):
 
 
 class Post(models.Model):
+    text = models.TextField(blank=True)
     author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     created = models.DateTimeField()
     modified = models.DateTimeField()
@@ -62,12 +63,16 @@ class Post(models.Model):
     dislikes = models.IntegerField()
 
 
-class PostElement(models.Model):
+class PostMedia(models.Model):
     post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
-    type = models.IntegerField()
-    # type of element, 0-text, 1-image, 2-media
-    text = models.TextField()
-    media = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='post/images/%Y/%m/%d',
+                              null=True)
+    audio = models.FileField(upload_to='post/audios/%Y/%m/%d/',
+                             null=True)
+    video = models.FileField(upload_to='post/videos/%Y/%m/%d/',
+                             null=True)
+    file = models.FileField(upload_to='post/files/%Y/%m/%d/',
+                            null=True)
 
 
 class Comment(models.Model):
