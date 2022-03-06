@@ -23,3 +23,7 @@ class PostForm(forms.Form):
         if all(field is None or field == '' for field in block_fields):
             raise ValidationError('Block can not be empty',
                                   code='empty block')
+
+
+class SkillsForm(forms.Form):
+    requested_skills = forms.CharField(widget=forms.HiddenInput)
