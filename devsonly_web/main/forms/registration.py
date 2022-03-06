@@ -51,3 +51,11 @@ class RegistrationForm(forms.Form):
             self.add_error('password',
                            ValidationError('Passwords do not match.',
                                            code='no match'))
+
+
+class Login(forms.Form):
+    username = forms.CharField(max_length=255,
+                               label='Username')
+    password = forms.CharField(max_length=255,
+                               widget=forms.PasswordInput,
+                               label='Password')

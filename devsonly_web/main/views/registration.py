@@ -1,25 +1,14 @@
 from datetime import date
 
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.hashers import make_password
+from django.http import HttpResponseRedirect
 
+from main.forms.registration import RegistrationForm, Login
 from main.models import User, UserSettings
-from main.forms.registration import RegistrationForm
-
 from src.common import get_ip
-
-
-def index_page(request) -> None:
-
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    print(type(ip))
-
-    return render(request, 'pages/index.html')
 
 
 def registration_page(request) -> None:
@@ -55,3 +44,36 @@ def registration_page(request) -> None:
                'form': form,
                }
     return render(request, 'pages/registration.html', context)
+
+
+def login_page(request) -> None:
+    context = {
+        'pagename': 'Authorization'
+    }
+    if request.method == 'POST':
+        form = Login(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            user = authenticate(request,
+                                username=data['username'],
+                                password=data['password'])
+            if user is not None:
+                login(request, user)
+                HttpResponseRedirect('/')
+                messages.add_message(request,
+                                     messages.SUCCESS,
+                                     "Авторизация успешна")
+            else:
+                messages.add_message(request,
+                                     messages.ERROR,
+                                     "Неверный логин или пароль")
+        else:
+            messages.add_message(request,
+                                 messages.ERROR,
+                                 "Неверный формат данных")
+    else:
+        form = Login()
+    context.update({
+        'form': form,
+    })
+    return render(request, 'pages/login.html', context)

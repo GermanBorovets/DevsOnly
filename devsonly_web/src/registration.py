@@ -1,8 +1,8 @@
 from datetime import date
 
 from django.core.exceptions import ValidationError
-
 from main.models import User
+
 
 def validate_letters(field: str) -> None:
     # Validates if form field contains only letters
