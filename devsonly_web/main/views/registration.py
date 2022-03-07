@@ -55,3 +55,6 @@ def registration_page(request) -> None:
                'form': form,
                }
     return render(request, 'pages/registration.html', context)
+
+def login_page(request) -> None:
+    return render(request, "pages/login.html")
