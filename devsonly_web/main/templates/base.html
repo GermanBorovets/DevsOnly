@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/light_mode.css' %}">
     <script src="https://kit.fontawesome.com/c67a5d8aa8.js" crossorigin="anonymous"></script>
     <title>{{ pagename }} - Devs0n1y</title>
     {% block extra_css %} {% endblock %}
@@ -19,6 +20,7 @@
         {% block content %}
         {% endblock %}
     </main>
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 
 </html>
