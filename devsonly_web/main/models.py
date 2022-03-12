@@ -7,6 +7,9 @@ class User(AbstractUser):
     is_moder = models.BooleanField(default=False)
     nwarns = models.IntegerField(default=0)
     # count of warns
+    is_banned = models.BooleanField(default=False)
+    permanent_ban = models.BooleanField(default=False)
+    unban_date = models.DateField(null=True)
     team_rating = models.IntegerField(default=0)
     # user rating as team member
     author_rating = models.IntegerField(default=0)

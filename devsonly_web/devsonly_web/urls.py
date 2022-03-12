@@ -22,6 +22,7 @@ from main.views.index import index_page
 from main.views.registration import login_page, registration_page
 from main.views.social import add_post_page, users_page
 from main.views.user import author_rating_page, team_member_rating_page
+from main.views.admin import userlist_page
 
 
 urlpatterns = [
@@ -45,5 +46,8 @@ urlpatterns = [
     path('users/list/',
          users_page,
          name='users'),
+    path('userlist/',
+         userlist_page,
+         name='userlist')
 ] + static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)

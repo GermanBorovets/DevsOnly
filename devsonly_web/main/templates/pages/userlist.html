@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Devs0n1y</title>
+</head>
+<body>
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+    {% for user in users %}
+        {{ user.id }}
+        {{ user.username }}
+        <label>is superuser: </label> {{ user.is_superuser }}
+        <label>, is staff: </label> {{ user.is_staff }}
+        <label>, is moder: </label> {{ user.is_moder }}
+        <label>, warnings: </label> {{ user.nwarns }}
+        <label>, is banned:</label> {{ user.is_banned }}
+        {% if user.permanent_ban %}
+            <label> permanently</label>
+        {% endif %}
+        <form action = "/userlist/" method='POST'>
+            {% csrf_token %}
+            {% if not user.is_moder %}
+                <button type="submit" name = 'moder toggle' value = {{user.id}} >Make moderator</button>
+            {% else %}
+                <button type="submit" name = 'moder toggle' value = {{user.id}} >Unmake moderator</button>
+            {% endif %}
+            {% if request.user.is_superuser %}
+                {% if not user.is_staff %}
+                    <button type="submit" name = 'staff toggle' value = {{user.id}} >Make staff</button>
+                {% else %}
+                    <button type="submit" name = 'staff toggle' value = {{user.id}} >Unmake staff</button>
+                {% endif %}
+            {% endif %}
+            <button type="submit" name = 'warning' value = {{user.id}} >Warn</button>
+            {% if not user.is_banned %}
+                <button type="submit" name = 'ban toggle' value = {{user.id}}>Ban</button>
+                <button type = 'submit' name = 'permaban' value = {{user.id}}>Ban permanently</button>
+            {% else %}
+                <button type="submit" name = 'ban toggle' value = {{user.id}} >Unban</button>
+            {% endif %}
+        </form>
+        <br>
+    {% endfor %}
+</body>
+</html>

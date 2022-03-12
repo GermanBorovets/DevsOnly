@@ -62,19 +62,31 @@ def login_page(request) -> None:
                                 username=data['username'],
                                 password=data['password'])
             if user is not None:
-                login(request, user)
-                HttpResponseRedirect('/')
-                messages.add_message(request,
-                                     messages.SUCCESS,
-                                     "Авторизация успешна")
+                if user.is_banned:
+                    if date.today() < user.unban_date or user.permanent_ban:
+                        messages.add_message(request,
+                                             messages.ERROR,
+                                             "You are banned")
+                    else:
+                        user.nwarns = 0
+                        user.is_banned = False
+                        user.unban_date = None
+                        user.save()
+
+                if not user.is_banned:  # not using "else" to avoid login repetition
+                    login(request, user)
+                    HttpResponseRedirect('/')
+                    messages.add_message(request,
+                                         messages.SUCCESS,
+                                         "Login succesful")
             else:
                 messages.add_message(request,
                                      messages.ERROR,
-                                     "Неверный логин или пароль")
+                                     "Wrong username or password")
         else:
             messages.add_message(request,
                                  messages.ERROR,
-                                 "Неверный формат данных")
+                                 "Invalid data")
     else:
         form = Login()
     context.update({
