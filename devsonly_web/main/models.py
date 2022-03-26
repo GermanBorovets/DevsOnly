@@ -76,18 +76,24 @@ class PostMedia(models.Model):
 
 
 class Comment(models.Model):
+    text = models.TextField()
     author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
     likes = models.IntegerField()
     dislikes = models.IntegerField()
+    created = models.DateTimeField()
 
 
 class CommentElement(models.Model):
     comment = models.ForeignKey(to=Comment, on_delete=models.CASCADE)
-    type = models.IntegerField()
-    # type of element, 0-text, 1-image, 2-media
-    text = models.TextField()
-    media = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='comment/images/%Y/%m/%d',
+                              null=True)
+    audio = models.FileField(upload_to='comment/audios/%Y/%m/%d',
+                              null=True)
+    video = models.FileField(upload_to='comment/videos/%Y/%m/%d',
+                             null=True)
+    file = models.FileField(upload_to='comment/files/%Y/%m/%d',
+                            null=True)
 
 
 class HardSkills(models.Model):

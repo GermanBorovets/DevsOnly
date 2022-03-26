@@ -1,16 +1,17 @@
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import render
 from django.contrib import messages
 
 from src.logger import init_logger
-from src.social import filetype
-from main.models import Post, PostMedia
+from src.social import filetype, filename
+from main.models import Post, PostMedia, Comment, CommentElement
 from main.forms.social import PostForm
 
 from main.models import User, HardSkills, UserSkills
-from main.forms.social import SkillsForm
+from main.forms.social import SkillsForm, CommentForm
 
 
 def index_page(request) -> None:
@@ -128,3 +129,110 @@ def users_page(request) -> None:
                     'skills': skills
                     })
     return render(request, 'pages/users.html', context)
+
+
+def show_post_page(request, post_id):
+    context = {}
+
+    if Post.objects.filter(id=post_id).exists():
+        post = Post.objects.get(id=post_id)
+        media = PostMedia.objects.filter(post_id=post_id)
+        images = []
+        audios = []
+        videos = []
+        files = []
+        comments = []
+
+        # Collecting post media
+        for file in media:
+            if file.image:
+                images.append({'file': file.image,
+                               'name': filename(file.image)})
+            if file.audio:
+                audios.append({'file': file.audio,
+                               'name': filename(file.audio)})
+            if file.video:
+                videos.append({'file': file.video,
+                               'name': filename(file.video)})
+            if file.file:
+                files.append({'file': file.file,
+                              'name': filename(file.file)})
+
+        # Comment form
+        if request.user.is_authenticated:
+            if request.method == 'POST':
+                comment_form = CommentForm(request.POST,
+                                            request.FILES)
+                if comment_form.is_valid():
+                    cd = comment_form.cleaned_data
+                    new_comment = Comment(post_id=post_id,
+                                          text=cd.get('text'),
+                                          author=request.user,
+                                          likes=0,
+                                          dislikes=0,
+                                          created=datetime.now())
+                    new_comment.save()
+
+                    # Collecting media for new comment
+                    for file in request.FILES.getlist('file'):
+                        if filetype(file) == 'image':
+                            element = CommentElement(comment=new_comment,
+                                                     image=file)
+                        elif filetype(file) == 'audio':
+                            element = CommentElement(comment=new_comment,
+                                                     audio=file)
+                        elif filetype(file) == 'video':
+                            element = CommentElement(comment=new_comment,
+                                                     video=file)
+                        else:
+                            element = CommentElement(comment=new_comment,
+                                                     file=file)
+                        element.save()
+            else:
+                comment_form = CommentForm()
+            context.update({'comment_form': comment_form})
+
+        # Collecting existing comments
+        for comment in Comment.objects.filter(post_id=post_id):
+            comment_images = []
+            comment_audios = []
+            comment_videos = []
+            comment_files = []
+            comments.append({'author': comment.author,
+                             'text': comment.text,
+                             'likes': comment.likes,
+                             'dislikes': comment.dislikes,
+                             'created': comment.created
+                             })
+
+            for element in CommentElement.objects.filter(comment=comment):
+                if element.image:
+                    comment_images.append({'file': element.image,
+                                           'name': filename(element.image)})
+                if element.audio:
+                    comment_audios.append({'file': element.audio,
+                                           'name': filename(element.audio)})
+                if element.video:
+                    comment_videos.append({'file': element.video,
+                                           'name': filename(element.video)})
+                if element.file:
+                    comment_files.append({'file': element.file,
+                                          'name': filename(element.file)})
+            comments[-1].update({'images': comment_images,
+                                 'audios': comment_audios,
+                                 'videos': comment_videos,
+                                 'files': comment_files
+                                 })
+
+        context.update({'post': post,
+                        'images': images,
+                        'audios': audios,
+                        'videos': videos,
+                        'files': files,
+                        'comments': comments
+                        })
+    else:
+        raise Http404
+
+    context.update({'pagename': 'Post'})
+    return render(request, 'pages/post.html', context)

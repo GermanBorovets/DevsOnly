@@ -30,3 +30,9 @@ def filetype(file: FileField) -> str:
         return 'video'
     else:
         return 'file'
+
+
+def filename(file: FileField) -> str:
+    # Returns file name without path
+    path = file.name
+    return path[path.rfind('/') + 1:]
