@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.contrib import messages
 
 from src.logger import init_logger
-from src.social import filetype, filename, collect_postfiles
+from src.social import filetype, filename, collect_files
 from main.models import Post, PostMedia, User, HardSkills, UserSkills
 from main.forms.social import PostForm, SkillsForm, EditPostForm
 
@@ -48,7 +48,7 @@ def add_post_page(request) -> None:
             logger.info('Post has been successfully saved.')
 
             # Saving media
-            media = collect_postfiles(request,
+            media = collect_files(request,
                                       'file',
                                       post)
 
@@ -142,7 +142,7 @@ def edit_post_page(request, post_id):
 
                 # Saving added media
                 print(edit_form.cleaned_data['deleted_media'])
-                new_media = collect_postfiles(request,
+                new_media = collect_files(request,
                                               'new_media',
                                               post)
 
@@ -172,7 +172,7 @@ def edit_post_page(request, post_id):
                         'audios': audios,
                         'videos': videos,
                         'files': files,
-                        'form': form
+                        'edit_form': edit_form
                         })
     else:
         raise Http404

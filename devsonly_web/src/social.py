@@ -41,7 +41,7 @@ def filename(file: FileField) -> str:
     return path[path.rfind('/') + 1:]
 
 
-def collect_postfiles(request, field, post: Post) -> dict:
+def collect_files(request, field, post: Post) -> dict:
     # Collects post files from field in request.FILES
     images = []
     audios = []
@@ -51,28 +51,24 @@ def collect_postfiles(request, field, post: Post) -> dict:
         if filetype(file) == 'image':
             media = PostMedia(post=post,
                               image=file)
-            media.save()
             images.append({'file': media.image,
                            'name': filename(media.image)})
         elif filetype(file) == 'audio':
             media = PostMedia(post=post,
                               audio=file)
-            media.save()
             audios.append({'file': media.audio,
                            'name': filename(media.audio)})
         elif filetype(file) == 'video':
             media = PostMedia(post=post,
                               video=file)
-            media.save()
             videos.append({'file': media.video,
                            'name': filename(media.video)})
         else:
             media = PostMedia(post=post,
                               file=file)
-            media.save()
             files.append({'file': media.file,
                           'name': filename(media.file)})
-
+        media.save()
         return {'images': images,
                 'audios': audios,
                 'videos': videos,
