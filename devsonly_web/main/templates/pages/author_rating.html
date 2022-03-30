@@ -1,14 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ pagename }}</title>
-</head>
-<body>
-    {% for user in author_rating %}
-        {{ user.id }}
-        {{ user.author_rating }}
-        <br>
-    {% endfor %}
-</body>
-</html>
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="table_container">
+    <table>
+        {% for user in author_rating %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td><a href="#">{ user.username }</a></td>
+                <td style="color: #009778;">{{ user.author_rating }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+<script>
+    'use strict'
+    let places = document.getElementsByClassName('ratingPlace');
+    places[0].style.color = '#FFD700';
+    places[1].style.color = '#C0C0C0';
+    places[2].style.color = '#CD7F32';
+    
+</script>
+{% endblock %}
