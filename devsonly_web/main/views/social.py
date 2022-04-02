@@ -9,7 +9,7 @@ from src.social import filetype
 from main.models import Post, PostMedia
 from main.forms.social import PostForm
 
-from main.models import User, HardSkills, UserSkills
+from main.models import User, HardSkills, UserSkills, Punishments
 from main.forms.social import SkillsForm
 
 
@@ -89,11 +89,12 @@ def add_post_page(request) -> None:
         else:
             logger.error('Unable to save post.')
     else:
-        post_form = PostForm()
-
-    context.update({'pagename': 'Add post',
-                    'post_form': post_form,
-                    })
+        if not Punishments.objects.filter(user=User.objects.get(username=request.user.username), type=3).exists():
+            post_form = PostForm()
+            context.update({'post_form': post_form})
+        else:
+            messages.error(request, 'You are muted')
+    context.update({'pagename': 'Add post'})
     return render(request, 'pages/add_post.html', context)
 
 
