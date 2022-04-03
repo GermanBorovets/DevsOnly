@@ -15,7 +15,6 @@ from main.forms.social import SkillsForm, CommentForm
 
 
 def index_page(request) -> None:
-
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
@@ -160,9 +159,16 @@ def show_post_page(request, post_id):
 
         # Comment form
         if request.user.is_authenticated:
+            print(request.POST)
             if request.method == 'POST':
+                if '_postlike' in request.POST:
+                    post.likes += 1
+                if '_postdislike' in request.POST:
+                    post.dislikes += 1
+                post.save()
+
                 comment_form = CommentForm(request.POST,
-                                            request.FILES)
+                                           request.FILES)
                 if comment_form.is_valid():
                     cd = comment_form.cleaned_data
                     new_comment = Comment(post_id=post_id,

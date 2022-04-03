@@ -57,8 +57,17 @@
             <hr>
         {% endif %}
 
-        <p>Likes: {{ post.likes }}</p>
-        <p>Dislikes: {{ post.dislikes }}</p>
+        <form action="{{ url }}" method="post">
+                {% csrf_token %}
+            <button type="submit" class="btn btn-primary" style="border-radius:100px; font-weight: 500;"
+                    name="_postlike">Like
+            </button>
+
+            <button type="submit" class="btn btn-primary" style="border-radius:100px; font-weight: 500;"
+                    name="_postdislike">Dislike
+            </button>
+        </form>
+
         <hr>
         <p>Created: {{ post.created }}</p>
         <p>Last modified: {{ post.modified }}</p>
@@ -115,8 +124,17 @@
                 <hr>
             {% endif %}
 
-            <p>Likes: {{ comment.likes }}</p>
-            <p>Dislikes: {{ comment.dislikes }}</p>
+            <form action="{{ url }}" method="post">
+                    {% csrf_token %}
+                <button type="submit" class="btn btn-primary" style="border-radius:100px; font-weight: 500;"
+                        name="_comlike{{ comment.id }}">Like
+                </button>
+
+                <button type="submit" class="btn btn-primary" style="border-radius:100px; font-weight: 500;"
+                        name="_comdislike{{ comment.id }}">Dislike
+                </button>
+            </form>
+
             <hr>
 
             <p>Created: {{ comment.created }}</p>
