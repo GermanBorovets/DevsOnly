@@ -27,3 +27,20 @@ class PostForm(forms.Form):
 
 class SkillsForm(forms.Form):
     requested_skills = forms.CharField(widget=forms.HiddenInput)
+
+
+class CommentForm(forms.Form):
+    text = forms.CharField(label='Text',
+                           widget=forms.TextInput(attrs={'placeholder': 'Write here...'}),
+                           required=False)
+    file = forms.FileField(label='Upload file',
+                           widget=forms.ClearableFileInput(attrs={'multiple': True}),
+                           required=False)
+
+    def clean(self):
+        cd = super().clean()
+        text = cd.get('text')
+        file = cd.get('file')
+        if text == '' and file is None:
+            raise ValidationError('You can not save empty comment',
+                                  code='empty')
