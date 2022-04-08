@@ -20,12 +20,14 @@ class User(AbstractUser):
 
 class UserSettings(models.Model):
     user = models.OneToOneField(to=get_user_model(), on_delete=models.CASCADE)
-    profile_picture = models.CharField(max_length=255, null=True)
+    profile_picture = models.ImageField(upload_to='photos/%Y/%m/%d/', default='photos/def/def.png')
     status = models.CharField(max_length=255, null=True)
     sex = models.CharField(max_length=255)
     # Format: they/them/pronunciation
     parts_access = models.CharField(max_length=255, default='1111111')
     # Contains string with 0 and 1 each of which means an ability of profile parts to be seen
+    # Access by indexes: 0 - date_of_birth, 1 - profile_picture, 2 - status, 3 - sex, 4 - hard_skills
+    # 5 - work_place, 6 - education
     hard_skills = models.TextField(null=True)
     work_place = models.TextField(null=True)
     education = models.TextField(null=True)

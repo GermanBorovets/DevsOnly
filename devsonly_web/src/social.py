@@ -1,4 +1,5 @@
 from os.path import splitext
+from main.models import Post
 
 from django.forms import FileField
 
@@ -36,3 +37,7 @@ def filename(file: FileField) -> str:
     # Returns file name without path
     path = file.name
     return path[path.rfind('/') + 1:]
+
+
+def post_exists(id: int) -> bool:
+    return Post.objects.filter(id=id).exists()

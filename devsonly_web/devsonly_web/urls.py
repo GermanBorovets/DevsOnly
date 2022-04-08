@@ -22,7 +22,7 @@ from main.views.index import index_page
 from main.views.registration import login_page, registration_page
 from main.views.social import show_post_page, add_post_page, users_page
 from main.views.user import author_rating_page, team_member_rating_page
-
+from main.views.user import profile_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -47,6 +47,10 @@ urlpatterns = [
          name='users'),
     path('post/<int:post_id>/',
          show_post_page,
-         name='show_post')
+         name='show_post'),
+    path('profile/',
+         profile_page,
+         name='profile'),
 ] + static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)
+
