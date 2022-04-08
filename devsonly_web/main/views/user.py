@@ -7,7 +7,6 @@ from src.common import from_get_id
 from src.logger import init_logger
 from src.user import user_exists, userset_exists, get_accesses, is_userset_owner
 from main.models import User, UserSettings
-from main.forms.user import EditProfileForm
 from main.models import User
 
 
