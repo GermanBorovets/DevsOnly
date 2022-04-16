@@ -22,7 +22,7 @@ from main.views.index import index_page
 from main.views.registration import login_page, registration_page
 from main.views.social import show_post_page, add_post_page, users_page
 from main.views.user import author_rating_page, team_member_rating_page
-from main.views.user import profile_page
+from main.views.user import profile_page, edit_profile_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -51,6 +51,8 @@ urlpatterns = [
     path('profile/',
          profile_page,
          name='profile'),
+    path('edit_profile/<int:user_id>/',
+         edit_profile_page,
+         name='edit_profile'),
 ] + static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)
-
