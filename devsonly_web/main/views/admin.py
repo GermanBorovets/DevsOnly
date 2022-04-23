@@ -1,10 +1,11 @@
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date, timezone
 
 from django.shortcuts import render
 from django.contrib import messages
 
 from src.logger import init_logger
-from main.models import User, Punishments
+from src.common import get_ip
+from main.models import User, Punishments, BannedIPs
 
 
 def index_page(request) -> None:
@@ -33,40 +34,72 @@ def userlist_page(request) -> None:
             user.save()
         if 'warning' in request.POST:
             user = User.objects.get(id=request.POST['warning'])
+            punishment = Punishments(user=user,
+                                     type=1,
+                                     date=datetime.now().replace(tzinfo=timezone.utc),
+                                     executor=request.user)
+            punishment.save()
             user.nwarns += 1
-            if user.nwarns >= 3:
-                user.is_banned = True
+            if user.nwarns == 3:
+                punishment = Punishments(user=user,
+                                         type=0,
+                                         date=datetime.now().replace(tzinfo=timezone.utc),
+                                         expire_date=datetime.now().replace(tzinfo=timezone.utc) + timedelta(days=30),
+                                         executor=request.user
+                                         )
+                punishment.save()
+
             user.save()
         if 'ban toggle' in request.POST:
-            punishment = Punishments(user=User.objects.get(id=request.POST['ban toggle']),
-                                     type=0,
-                                     date=date.today(),
-                                     expire_date=datetime.now() + timedelta(days=30),
-                                     executor=request.user
-                                     )
-            punishment.save()
+            user = User.objects.get(id=request.POST['ban toggle'])
+            if Punishments.objects.filter(user=user, type=0).exists():
+                punishment = Punishments.objects.get(user=user, type=0)
+                punishment.delete()
+            elif Punishments.objects.filter(user=user, type=2).exists():
+                punishment = Punishments.objects.get(user=user, type=2)
+                punishment.delete()
+            else:
+                punishment = Punishments(user=user,
+                                         type=0,
+                                         date=datetime.now().replace(tzinfo=timezone.utc),
+                                         expire_date=datetime.now().replace(tzinfo=timezone.utc) + timedelta(days=30),
+                                         executor=request.user
+                                         )
+                punishment.save()
         if 'permaban' in request.POST:
             punishment = Punishments(user=User.objects.get(id=request.POST['ban toggle']),
                                      type=0,
-                                     date=date.today(),
+                                     date=datetime.now().replace(tzinfo=timezone.utc),
                                      executor=request.user
                                      )
             punishment.save()
         if 'mute toggle' in request.POST:
-            user = User.objects.get(id=request.POST['mute toggle'])
-            user.is_muted = not user.is_muted
-            user.save()
+            punishment = Punishments(user=User.objects.get(id=request.POST['mute toggle']),
+                                     type=3,
+                                     date=datetime.now().replace(tzinfo=timezone.utc),
+                                     expire_date=datetime.now().replace(tzinfo=timezone.utc) + timedelta(days=30),
+                                     executor=request.user
+                                     )
+            punishment.save()
         if 'delete user' in request.POST:
             user = User.objects.get(id=request.POST['delete user'])
             user.delete()
         if 'ip ban' in request.POST:
-            pass
+            ip = BannedIPs(ip=get_ip(request))
+            ip.save()
 
-
-    if request.user.is_superuser or request.user.is_staff:
+    if request.user.is_superuser or request.user.is_staff or request.user.is_moder:
         users = User.objects.all()
+        punishments = {}
+        for i in users:
+            if Punishments.objects.filter(user=i, type=0).exists():
+                punishments.update({i: True})
+            else:
+                punishments.update({i: False})
+        print(punishments)
         context.update({
-            'users': users
+            'users': users,
+            'punishments': punishments
         })
     else:
         messages.add_message(request, messages.ERROR, 'You do not have the permissions to view this page')

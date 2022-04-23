@@ -66,7 +66,7 @@ def login_page(request) -> None:
                 if Punishments.objects.filter(user=User.objects.get(username=user.username), type=0).exists():
                     punishment = Punishments.objects.get(user=User.objects.get(username=user.username), type=0)
                     if punishment.expire_date is not None:
-                        if datetime.now() < punishment.expire_date:
+                        if datetime.now() < punishment.expire_date(tz=None):
                             messages.add_message(request,
                                                  messages.ERROR,
                                                  f"You are banned until "

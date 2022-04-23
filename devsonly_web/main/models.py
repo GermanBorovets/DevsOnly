@@ -39,10 +39,9 @@ class Punishments(models.Model):
     executor = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE, related_name='punishing_executor')
     type = models.IntegerField()
     # type of punishment, 0-ban, 1-warn, 2-ip ban, 3-mute
-    term = models.DateTimeField(default=None)
-    # if exists
     reason = models.CharField(max_length=255)
     expire_date = models.DateTimeField(null=True)
+    # if exists
 
 
 class StaffPunishments(models.Model):
