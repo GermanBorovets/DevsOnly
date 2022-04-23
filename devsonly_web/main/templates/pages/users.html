@@ -1,148 +1,164 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Devs0n1y</title>
-    </head>
-    <body>
-        <header>
-            <h2>{{ pagename }}</h2>
-            <hr>
-        </header>
+{% extends 'base/base.html' %}
+{% block content %}
 
-        <textarea id="skills_input" placeholder="Write skill you need here..."></textarea>
-        <br>
-
-        <form action="/users/list/">
-            {{ skills_form.requested_skills }}
-            <input type="submit" value="Search">
-        </form>
-        <hr>
-
-        <!--Click on keyword to apply it-->
-        <h3>Keywords:</h3>
-        <ul id="keywords_list"></ul>
-        <hr>
-
-        <!--Click on tag to delete it-->
-        <h3>Tags:</h3>
-        <ul id="tags_list"></ul>
-        <hr>
-
-        <!--Found users-->
+<div class="main_container">
+    <div class="filter_container">
+        <div class="form_container">
+            <textarea id="skills_input" placeholder="Write skill you need here..." class="skills_area"></textarea>
+            <form action="/users/list/">
+                {{ skills_form.requested_skills }}
+                <input type="submit" value="Search" class="subm_button">
+            </form>
+        </div>
+        <div class="skills_info_cont">
+            <div class="keywords_container">
+                <h3>Keywords:</h3>
+                <ul id="keywords_list">
+                    <li>Keyword1</li>
+                    <li>Keyword2</li>
+                    <li>Keyword3</li>
+                    <li>Keyword4</li>
+                </ul>
+            </div>
+            <div class="tags_container">
+                <h3>Tags:</h3>
+                <ul id="tags_list">
+                    <li>Tag1</li>
+                    <li>Tag2</li>
+                    <li>Tag3</li>
+                    <li>Tag4</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="users_container">
         {% if users %}
-            <h3>Users:</h3>
-            <ul>
-                {% for user in users %}
-                    <li>{{ user }}</li>
-                {% endfor %}
-            </ul>
-            <hr>
+            {% for user in users %}
+                <div class="user_card">
+                    <p style="text-align: center; font-size: 17px; font-weight: bold; margin: 10px 0;">{{ user.username }}</p>
+                    <p class="card_text">Team Rating: <span class="card_green_text">{{ user.team_rating }}</span></p>
+                    <p class="card_text">Author Rating: <span class="card_green_text">{{ user.author_rating }}</span></p>
+                </div>
+            {% endfor %}
         {% endif %}
+    </div>
+</div>
 
-        <script>
-            'use strict';
 
-            document.getElementById('id_requested_skills').value = '';
-            let keywords = new Set();
+<!--Click on keyword to apply it-->
 
-            // Collect existing tags
-            let tags = [
-                {% for skill in skills %}
-                    '{{ skill }}',
-                {% endfor %}
-            ]
 
-            // Add event for the skills input field
-            function skillsOnInput(event){
-                let word = getValue('skills_input');
-                let requested_skills = getValue('id_requested_skills');
+<!--Click on tag to delete it-->
 
-                // Format input
-                word = word.includes('\n') ? word.replace(/\n/g, ' '): word;
-                word = word.startsWith(' ') ? word.replace(/ /g, ''): word;
-                document.getElementById('skills_input').value = word;
 
-                // Try to add requested tag
-                if (word.includes(' ')){
-                    // If word is written, try to add it
-                    word = word.slice(0, word.indexOf(' '));
-                    if (!requested_skills.includes(word) && tags.includes(word)){
-                        let tag = document.createElement('li');
-                        tag.id = `${word}_tag`;
-                        tag.addEventListener('click', () => deleteOnClick(tag));
-                        tag.innerHTML = word;
-                        document.getElementById('tags_list').append(tag);
-                        document.getElementById('id_requested_skills').value += `${word} `;
-                    }
-                    document.getElementById('skills_input').value = getValue('skills_input').replace(`${word} `, '');
-                    deleteKeyword(word);
-                    word = getValue('skills_input').slice(0, getValue('skills_input').indexOf(' '));
-                }
-                console.log(`Requested skills: ${getValue('id_requested_skills')}`);
-                console.log(`Current word: ${word}`);
+<!--Found users-->
 
-                // Search for matching tags
-                for (let tag of tags){
-                    if (word != '' && tag.startsWith(word) && !keywords.has(tag)){
-                        // If found matching tag, add keyword
-                        keywords.add(tag);
-                        let keyword = document.createElement('li');
-                        keyword.id = `${tag}_keyword`;
-                        keyword.addEventListener('click', () => addOnClick(keyword));
-                        keyword.innerHTML = tag;
-                        document.getElementById('keywords_list').append(keyword);
-                        console.log(`Keywords: ${tag}`);
-                    }else if ((word == '' || !tag.startsWith(word)) && keywords.has(tag)){
-                        // Otherwise, delete unwanted keyword
-                        deleteKeyword(tag);
-                    }
-                }
+<script>
+    'use strict';
+
+    document.getElementById('id_requested_skills').value = '';
+    let keywords = new Set();
+
+    // Collect existing tags
+    let tags = [{
+            %
+            for skill in skills %
+        }
+        '{{ skill }}',
+        {
+            % endfor %
+        }
+    ]
+
+    // Add event for the skills input field
+    function skillsOnInput(event) {
+        let word = getValue('skills_input');
+        let requested_skills = getValue('id_requested_skills');
+
+        // Format input
+        word = word.includes('\n') ? word.replace(/\n/g, ' ') : word;
+        word = word.startsWith(' ') ? word.replace(/ /g, '') : word;
+        document.getElementById('skills_input').value = word;
+
+        // Try to add requested tag
+        if (word.includes(' ')) {
+            // If word is written, try to add it
+            word = word.slice(0, word.indexOf(' '));
+            if (!requested_skills.includes(word) && tags.includes(word)) {
+                let tag = document.createElement('li');
+                tag.id = `${word}_tag`;
+                tag.addEventListener('click', () => deleteOnClick(tag));
+                tag.innerHTML = word;
+                document.getElementById('tags_list').append(tag);
+                document.getElementById('id_requested_skills').value += `${word} `;
             }
+            document.getElementById('skills_input').value = getValue('skills_input').replace(`${word} `, '');
+            deleteKeyword(word);
+            word = getValue('skills_input').slice(0, getValue('skills_input').indexOf(' '));
+        }
+        console.log(`Requested skills: ${getValue('id_requested_skills')}`);
+        console.log(`Current word: ${word}`);
 
-            // Deleting event for unwanted tags
-            function deleteOnClick(elem){
-                let requested_skills = getValue('id_requested_skills');
-                let tag = elem.id.slice(0, elem.id.indexOf('_'));
-                document.getElementById('id_requested_skills').value = requested_skills.replace(tag, '');
-                elem.remove()
-                console.log(`Deleting tag: ${tag}`);
-                console.log(`Requested skills: ${getValue('id_requested_skills')}`);
+        // Search for matching tags
+        for (let tag of tags) {
+            if (word != '' && tag.startsWith(word) && !keywords.has(tag)) {
+                // If found matching tag, add keyword
+                keywords.add(tag);
+                let keyword = document.createElement('li');
+                keyword.id = `${tag}_keyword`;
+                keyword.addEventListener('click', () => addOnClick(keyword));
+                keyword.innerHTML = tag;
+                document.getElementById('keywords_list').append(keyword);
+                console.log(`Keywords: ${tag}`);
+            } else if ((word == '' || !tag.startsWith(word)) && keywords.has(tag)) {
+                // Otherwise, delete unwanted keyword
+                deleteKeyword(tag);
             }
+        }
+    }
 
-            // Adding event for satisfying keywords
-            function addOnClick(elem){
-                let requested_skills = getValue('id_requested_skills');
-                let word = elem.id.slice(0, elem.id.indexOf('_'));
-                if (!requested_skills.includes(word)){
-                    // If tag is unique, add
-                    let tag = document.createElement('li');
-                    tag.id = `${word}_tag`;
-                    tag.addEventListener('click', () => deleteOnClick(tag));
-                    tag.innerHTML = word;
-                    document.getElementById('tags_list').append(tag);
-                    document.getElementById('id_requested_skills').value += `${word} `;
-                }
-                document.getElementById('skills_input').value = '';
-                keywords.clear();
-                document.getElementById('keywords_list').innerHTML = null;
-                console.log(`Applying keyword: ${word}`);
-                console.log(`Requested skills: ${getValue('id_requested_skills')}`);
-            }
+    // Deleting event for unwanted tags
+    function deleteOnClick(elem) {
+        let requested_skills = getValue('id_requested_skills');
+        let tag = elem.id.slice(0, elem.id.indexOf('_'));
+        document.getElementById('id_requested_skills').value = requested_skills.replace(tag, '');
+        elem.remove()
+        console.log(`Deleting tag: ${tag}`);
+        console.log(`Requested skills: ${getValue('id_requested_skills')}`);
+    }
 
-            function deleteKeyword(word){
-                keywords.delete(word);
-                if (document.getElementById(`${word}_keyword`)){
-                    document.getElementById(`${word}_keyword`).remove();
-                }
-                console.log(`Deleting keyword: ${word}`);
-            }
+    // Adding event for satisfying keywords
+    function addOnClick(elem) {
+        let requested_skills = getValue('id_requested_skills');
+        let word = elem.id.slice(0, elem.id.indexOf('_'));
+        if (!requested_skills.includes(word)) {
+            // If tag is unique, add
+            let tag = document.createElement('li');
+            tag.id = `${word}_tag`;
+            tag.addEventListener('click', () => deleteOnClick(tag));
+            tag.innerHTML = word;
+            document.getElementById('tags_list').append(tag);
+            document.getElementById('id_requested_skills').value += `${word} `;
+        }
+        document.getElementById('skills_input').value = '';
+        keywords.clear();
+        document.getElementById('keywords_list').innerHTML = null;
+        console.log(`Applying keyword: ${word}`);
+        console.log(`Requested skills: ${getValue('id_requested_skills')}`);
+    }
 
-            function getValue(id){
-                return document.getElementById(id).value;
-            }
+    function deleteKeyword(word) {
+        keywords.delete(word);
+        if (document.getElementById(`${word}_keyword`)) {
+            document.getElementById(`${word}_keyword`).remove();
+        }
+        console.log(`Deleting keyword: ${word}`);
+    }
 
-            document.getElementById('skills_input').addEventListener('input', skillsOnInput);
-        </script>
-    </body>
-</html>
+    function getValue(id) {
+        return document.getElementById(id).value;
+    }
+
+    document.getElementById('skills_input').addEventListener('input', skillsOnInput);
+</script>
+{% endblock %}
