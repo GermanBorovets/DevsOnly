@@ -25,7 +25,7 @@ from main.views.user import profile_page
 from main.views.registration import registration_page, login_page
 from main.views.registration import registration_page
 from main.views.social import *
-
+from main.views.user import profile_page, edit_profile_page
 
 
 urlpatterns = [
@@ -57,10 +57,12 @@ urlpatterns = [
     path('profile/',
          profile_page,
          name='profile'),
+    path('edit_profile/<int:user_id>/',
+         edit_profile_page,
+         name='edit_profile'),
+
     path('login/',
         login_page,
         name='login'),
 ]+static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)
-
-

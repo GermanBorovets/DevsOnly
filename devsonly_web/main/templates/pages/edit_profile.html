@@ -1,5 +1,268 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Devs0n1y</title>
+    </head>
+    <body>
+        <header>
+            <h2>{{ pagename }}</h2>
+        </header>
+        <hr>
 
-{% block content %}
-    {{ user_data }}
-{% endblock %}
+        <h3>Profile:</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if profile_form.errors %}
+                <ul>
+                    {% for field in profile_form %}
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {{ profile_form.username.label }}: {{ profile_form.username }}
+            <br>
+
+            <img src="{{ user_settings.profile_picture.url }}">
+            <br>
+            {{ profile_form.profile_picture.label }}: {{ profile_form.profile_picture}}
+            <br>
+
+            {{ profile_form.status.label }}: {{ profile_form.status }}
+            <br>
+
+            {{ profile_form.first_name.label }}: {{ profile_form.first_name }}
+            <br>
+
+            {{ profile_form.last_name.label }}: {{ profile_form.last_name }}
+            <br>
+
+            {{ profile_form.date_of_birth.label }}: {{ profile_form.date_of_birth }}
+            <br>
+
+            Pronouns: {{ profile_form.subjective }} / {{ profile_form.objective }}
+            <br>
+
+            {{ profile_form.education.label }}: {{ profile_form.education }}
+            <br>
+
+            {{ profile_form.work_place.label }}: {{ profile_form.work_place }}
+            <br>
+
+            <input type="submit" name="profile_form" value="Change profile">
+        </form>
+        <hr>
+
+        <h3>Email:</h3>
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if email_form.errors %}
+                <ul>
+                    {% for field in email_form %}
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {{ email_form.email.label }}: {{ email_form.email }}
+            <br>
+
+            <input type="submit" name="email_form" value="Change email">
+        </form>
+        <hr>
+
+        <h3>Password:</h3>
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if password_form.errors %}
+                <ul>
+                    {% for field in password_form %}
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {{ password_form.old_password.label }}: {{ password_form.old_password }}
+            <br>
+
+            {{ password_form.new_password.label }}: {{ password_form.new_password }}
+            <br>
+
+            <input type="submit" name="password_form" value="Change password">
+        </form>
+        <hr>
+
+        <!--Click on tag to delete it-->
+        <h3>Skills:</h3>
+        <ul id="tags_list">
+            {% for skill in user_skills %}
+                <li id="{{ skill }}_tag" onclick="deleteOnClick(this)">{{ skill }}</li>
+            {% endfor %}
+        </ul>
+        <hr>
+
+        <textarea id="skills_input" placeholder="Write skill you have here..."></textarea>
+        <br>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ skills_form.requested_skills }}
+            <input type="submit" name="skills_form" value="Change user skills">
+        </form>
+        <hr>
+
+        <!--Click on keyword to apply it-->
+        <h3>Keywords:</h3>
+        <ul id="keywords_list"></ul>
+        <hr>
+
+        <!--Pasting initial values-->
+        <script>
+            'use strict';
+
+            let date_of_birth = '{{ date_of_birth }}';
+            let subjective = '{{ user_settings.sex}}'.slice(0, '{{ user_settings.sex }}'.indexOf('/'));
+            let objective = '{{ user_settings.sex }}'.slice('{{ user_settings.sex }}'.indexOf('/') + 1);
+            document.getElementById('id_username').value = '{{ user.username }}';
+            document.getElementById('id_status').value = '{{ user_settings.status }}';
+            document.getElementById('id_first_name').value = '{{ user.first_name }}';
+            document.getElementById('id_last_name').value = '{{ user.last_name }}';
+            document.getElementById('id_date_of_birth').value = date_of_birth;
+            document.getElementById('id_subjective').value = subjective;
+            document.getElementById('id_objective').value = objective;
+            document.getElementById('id_education').value = '{{ user_settings.education }}';
+            document.getElementById('id_work_place').value = '{{ user_settings.work_place }}';
+        </script>
+
+        <!--For skills form-->
+        <script>
+            'use strict';
+
+            let keywords = new Set();
+            document.getElementById('id_requested_skills').value = '';
+
+            {% for skill in user_skills %}
+                document.getElementById('id_requested_skills').value += '{{ skill }} ';
+            {% endfor %}
+            console.log(`Requested skills: ${document.getElementById('id_requested_skills').value}`);
+
+            // Collect existing tags
+            let tags = [
+                {% for skill in skills %}
+                    '{{ skill }}',
+                {% endfor %}
+            ]
+
+            // Add event for the skills input field
+            function skillsOnInput(event){
+                let word = getValue('skills_input');
+                let requested_skills = getValue('id_requested_skills');
+
+                // Format input
+                word = word.includes('\n') ? word.replace(/\n/g, ' '): word;
+                word = word.startsWith(' ') ? word.replace(/ /g, ''): word;
+                document.getElementById('skills_input').value = word;
+
+                // Try to add requested tag
+                if (word.includes(' ')){
+                    // If word is written, try to add it
+                    word = word.slice(0, word.indexOf(' '));
+                    if (!requested_skills.includes(word) && tags.includes(word)){
+                        let tag = document.createElement('li');
+                        tag.id = `${word}_tag`;
+                        tag.addEventListener('click', () => deleteOnClick(tag));
+                        tag.innerHTML = word;
+                        document.getElementById('tags_list').append(tag);
+                        document.getElementById('id_requested_skills').value += `${word} `;
+                    }
+                    document.getElementById('skills_input').value = getValue('skills_input').replace(`${word} `, '');
+                    deleteKeyword(word);
+                    word = getValue('skills_input').slice(0, getValue('skills_input').indexOf(' '));
+                }
+                console.log(`Requested skills: ${getValue('id_requested_skills')}`);
+                console.log(`Current word: ${word}`);
+
+                // Search for matching tags
+                for (let tag of tags){
+                    if (word != '' && tag.startsWith(word) && !keywords.has(tag)){
+                        // If found matching tag, add keyword
+                        keywords.add(tag);
+                        let keyword = document.createElement('li');
+                        keyword.id = `${tag}_keyword`;
+                        keyword.addEventListener('click', () => addOnClick(keyword));
+                        keyword.innerHTML = tag;
+                        document.getElementById('keywords_list').append(keyword);
+                        console.log(`Keywords: ${tag}`);
+                    }else if ((word == '' || !tag.startsWith(word)) && keywords.has(tag)){
+                        // Otherwise, delete unwanted keyword
+                        deleteKeyword(tag);
+                    }
+                }
+            }
+
+            // Deleting event for unwanted tags
+            function deleteOnClick(elem){
+                let requested_skills = getValue('id_requested_skills');
+                let tag = elem.id.slice(0, elem.id.indexOf('_'));
+                document.getElementById('id_requested_skills').value = requested_skills.replace(tag, '');
+                elem.remove()
+                console.log(`Deleting tag: ${tag}`);
+                console.log(`Requested skills: ${getValue('id_requested_skills')}`);
+            }
+
+            // Adding event for satisfying keywords
+            function addOnClick(elem){
+                let requested_skills = getValue('id_requested_skills');
+                let word = elem.id.slice(0, elem.id.indexOf('_'));
+                if (!requested_skills.includes(word)){
+                    // If tag is unique, add
+                    let tag = document.createElement('li');
+                    tag.id = `${word}_tag`;
+                    tag.addEventListener('click', () => deleteOnClick(tag));
+                    tag.innerHTML = word;
+                    document.getElementById('tags_list').append(tag);
+                    document.getElementById('id_requested_skills').value += `${word} `;
+                }
+                document.getElementById('skills_input').value = '';
+                keywords.clear();
+                document.getElementById('keywords_list').innerHTML = null;
+                console.log(`Applying keyword: ${word}`);
+                console.log(`Requested skills: ${getValue('id_requested_skills')}`);
+            }
+
+            function deleteKeyword(word){
+                keywords.delete(word);
+                if (document.getElementById(`${word}_keyword`)){
+                    document.getElementById(`${word}_keyword`).remove();
+                }
+                console.log(`Deleting keyword: ${word}`);
+            }
+
+            function getValue(id){
+                return document.getElementById(id).value;
+            }
+
+            document.getElementById('skills_input').addEventListener('input', skillsOnInput);
+        </script>
+        <br>
+    </body>
+</html>
