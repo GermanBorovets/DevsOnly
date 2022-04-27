@@ -75,6 +75,24 @@ class PostMedia(models.Model):
     file = models.FileField(upload_to='post/files/%Y/%m/%d/',
                             null=True)
 
+    # Clearing storage on delete
+    def delete(self, *args, **kwargs) -> None:
+        if self.image:
+            storage = self.image.storage
+            path = self.image.path
+        if self.audio:
+            storage = self.audio.storage
+            path = self.audio.path
+        if self.video:
+            storage = self.video.storage
+            path = self.video.path
+        if self.file:
+            storage = self.file.storage
+            path = self.file.path
+
+        super().delete(*args, **kwargs)
+        storage.delete(path)
+
 
 class Comment(models.Model):
     text = models.TextField()

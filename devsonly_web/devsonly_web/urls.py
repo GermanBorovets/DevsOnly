@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from main.views.index import index_page
 from main.views.registration import login_page, registration_page
 from main.views.social import show_post_page, add_post_page, users_page
+from main.views.social import add_post_page, users_page, edit_post_page
 from main.views.user import author_rating_page, team_member_rating_page
 from main.views.user import profile_page
 from main.views.registration import registration_page, login_page
@@ -34,9 +35,7 @@ urlpatterns = [
     path('registration/',
          registration_page,
          name='registration'),
-
     path('login/',
-
          login_page,
          name='login'),
     path('post/add/',
@@ -60,9 +59,11 @@ urlpatterns = [
     path('edit_profile/<int:user_id>/',
          edit_profile_page,
          name='edit_profile'),
-
     path('login/',
         login_page,
         name='login'),
-]+static(settings.MEDIA_URL,
+    path('post/edit/<int:post_id>/',
+         edit_post_page,
+         name='edit_post'),
+    ]+ static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)

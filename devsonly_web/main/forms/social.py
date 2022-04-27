@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
-
+from django.db.models import Q
+from main.models import PostMedia
 
 class PostForm(forms.Form):
     text = forms.CharField(label='Text',
@@ -29,6 +30,7 @@ class SkillsForm(forms.Form):
     requested_skills = forms.CharField(widget=forms.HiddenInput)
 
 
+
 class CommentForm(forms.Form):
     text = forms.CharField(label='Text',
                            widget=forms.TextInput(attrs={'placeholder': 'Write here...'}),
@@ -44,3 +46,25 @@ class CommentForm(forms.Form):
         if text == '' and file is None:
             raise ValidationError('You can not save empty comment',
                                   code='empty')
+
+class EditPostForm(forms.Form):
+    text = forms.CharField(label='Change text',
+                           required=False)
+    new_media = forms.FileField(label='Add file',
+                           widget=forms.ClearableFileInput(attrs={'multiple': True}),
+                           required=False)
+    deleted_media = forms.CharField(widget=forms.HiddenInput,
+                                    required=False)
+
+    def clean_deleted_media(self) -> forms.CharField:
+        cleaned_data = super().clean()
+        deleted_media = cleaned_data.get('deleted_media').split()
+        for dm in deleted_media:
+            if not PostMedia.objects.filter(Q(image=dm) |
+                                            Q(audio=dm) |
+                                            Q(video=dm) |
+                                            Q(file=dm)).exists():
+                raise ValidationError('Invalid value',
+                                      code='invalid')
+        return deleted_media
+
