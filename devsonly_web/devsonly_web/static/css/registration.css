@@ -1,0 +1,58 @@
+.wellcum_block{
+    padding: 10px;
+    border-radius: 7px;
+    min-width: 25%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.wellcum_bod{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: inherit;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.wellcum_button{
+    width: 15vh;
+    height: 5vh;
+    background-color: transparent;
+    border-radius: 5px;
+    border: 2px solid #009778;
+    color: #009778;
+    transition: 0.3s;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.wellcum_button:hover{
+    color: #fff;
+    background-color: #009778;
+}
+
+.wellcum_imp{
+    background-color: transparent;
+    border: 2px solid rgba(0, 151, 120, 0.6);
+    border-radius: 5px;
+    padding: 2px;
+    color: rgba(255, 255, 255, 0.8);
+    outline: none;
+}
+
+.wellcum_imp_1{
+    background-color: transparent;
+    border: 3px solid #009778;
+    border-radius: 5px;
+    padding: 2px;
+    color: rgba(255, 255, 255, 0.8);
+    outline: none;
+}
+.Reg_logo{
+    margin-bottom: 5px;
+}

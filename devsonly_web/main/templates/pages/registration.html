@@ -1,55 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Devs0n1y</title>
-    </head>
-    <body>
-        <header>
-            <h3>{{ pagename }}</h3>
-        </header>
-        <hr>
-        <form action="/registration/" method="POST">
-            {% csrf_token %}
 
-            {% if messages %}
-                <ul>
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+{% extends 'base/base.html' %}
+    {% block content %}
+        <div class="wellcum_bod">
+            <form action="/registration/" method="POST" class="wellcum_block">
+                {% csrf_token %}
+                <h1 class="Reg_logo">Registration</h1>
+                <input type="text" name="username" placeholder="username" maxlength="16" required="" id="id_username" class="wellcum_imp">
+                <br>
+                <input type="email" name="email" placeholder="email" required="" id="id_email" class="wellcum_imp">
+                <br>
+                <input type="password" name="password" placeholder="password" maxlength="24" required="" id="id_password" class="wellcum_imp">
+                <br>
+                <input type="password" name="double_password" placeholder="password again" maxlength="24" required="" id="id_double_password" class="wellcum_imp">
+                <br>
+                <input type="submit" value="Registration" class="wellcum_button">
+            </form>
+        </div>
+    {% endblock %}
 
-            <!--Asterix means that the field is required-->
-            <font color="red">*</font>
-            {{ form.username.label }}: {{ form.username }}
-            <br>
-
-            <font color="red">*</font>
-            {{ form.email.label }}: {{ form.email }}
-            <br>
-
-            <font color="red">*</font>
-            {{ form.password.label }}: {{ form.password }}
-            <br>
-
-            <font color="red">*</font>
-            {{ form.double_password.label }}: {{ form.double_password }}
-            <hr>
-
-            {{ form.first_name.label }}: {{ form.first_name }}
-            <br>
-
-            {{ form.last_name.label }}: {{ form.last_name }}
-            <br>
-
-            {{ form.date_of_birth.label }}: {{ form.date_of_birth }}
-            <br>
-
-            Pronouns: {{ form.subjective }} / {{ form.objective }}
-            <hr>
-
-            <input type="submit" value="Create account">
-        </form>
-    </body>
-</html>
