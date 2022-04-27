@@ -19,10 +19,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from main.views.index import index_page
+
 from main.views.registration import login_page, registration_page
 from main.views.social import show_post_page, add_post_page, users_page
 from main.views.user import author_rating_page, team_member_rating_page
 from main.views.user import profile_page
+
+from main.views.registration import registration_page, login_page
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +36,7 @@ urlpatterns = [
          registration_page,
          name='registration'),
     path('login/',
+
          login_page,
          name='login'),
     path('post/add/',
@@ -51,6 +57,12 @@ urlpatterns = [
     path('profile/',
          profile_page,
          name='profile'),
+    path('login/',
+        login_page,
+        name='login')
 ] + static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)
+
+
+
 
