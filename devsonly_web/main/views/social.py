@@ -26,6 +26,7 @@ def index_page(request) -> None:
     return render(request, 'pages/index.html')
 
 
+
 @login_required
 def add_post_page(request) -> None:
     context = {}
@@ -236,3 +237,6 @@ def show_post_page(request, post_id):
 
     context.update({'pagename': 'Post'})
     return render(request, 'pages/post.html', context)
+
+
+

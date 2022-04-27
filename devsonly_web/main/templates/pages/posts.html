@@ -1,0 +1,105 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="main_container">
+        <div class="sorter">
+            <p class="sorted_text">News wall</p>
+            <div class="drop_down_menu">
+                <p style="font-size:18px;">Posts</p>
+                <a class="main-item" href="javascript:void(0);" tabindex="1" id="sort_btn" onclick="get_top()">Sort posts by: <i class="fa-solid fa-angle-down"></i></a> 
+                <ul class="sub-menu"> 
+                    <li><a href="#1" class="sort-li">Creation date</a></li>  
+                    <li><a href="#3" class="sort-li">Popularity</a></li> 
+                </ul> 
+            </div>
+        </div>
+        <div class="posts_container" id="post_cont">
+            <div class="post">
+                <p class="users_tag">#Users tag</p>
+                <p class="post_text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi, repellendus animi delectus rem iusto rerum officiis et nam vero aliquid nostrum sed, corporis eaque odio minima quam natus esse totam?</p>
+                <div class="post_image_cont">
+                    <img src="https://droider.ru/wp-content/uploads/2020/01/LGoEDSKPxnLjMpJv4VaEK5.jpg" alt="" class="post_image">
+                </div>
+                <div class="rating_cont">
+                    <i class="fa-solid fa-plus"></i><i class="fa-solid fa-minus"></i>
+                    <p class="rating_counter" style="color: #DE1717;">rating: -10</p>
+                </div>
+                <form method="GET" class="add_comment_form">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Add comment..." name="add_comment" class="add_comment_input">
+                    <input type="submit" value="Comments" class="add_comment_button">
+                </form>
+            </div>
+            <div class="post">
+                <p class="users_tag">#Users tag</p>
+                <div class="post_image_cont">
+                    <img src="https://droider.ru/wp-content/uploads/2020/01/LGoEDSKPxnLjMpJv4VaEK5.jpg" alt="" class="post_image">
+                </div>
+                <div class="rating_cont">
+                    <i class="fa-solid fa-plus"></i><i class="fa-solid fa-minus"></i>
+                    <p class="rating_counter" style="color: #3E9C3D">rating: +15</p>
+                </div>
+                <form method="GET" class="add_comment_form">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Add comment..." name="add_comment" class="add_comment_input">
+                    <input type="submit" value="Comments" class="add_comment_button">
+                </form>
+            </div>
+            <div class="post">
+                <p class="users_tag">#Users tag</p>
+                <div class="post_image_cont">
+                    <img src="https://droider.ru/wp-content/uploads/2020/01/LGoEDSKPxnLjMpJv4VaEK5.jpg" alt="" class="post_image">
+                </div>
+                <div class="rating_cont">
+                    <i class="fa-solid fa-plus"></i><i class="fa-solid fa-minus"></i>
+                    <p class="rating_counter">rating: -10</p>
+                </div>
+                <form method="POST" class="add_comment_form">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Add comment..." name="add_comment" class="add_comment_input">
+                    <input type="submit" value="Comments" class="add_comment_button">
+                </form>
+            </div>
+            <div class="post">
+                <p class="users_tag">#Users tag</p>
+                <div class="post_image_cont">
+                    <img src="https://droider.ru/wp-content/uploads/2020/01/LGoEDSKPxnLjMpJv4VaEK5.jpg" alt="" class="post_image">
+                </div>
+                <div class="rating_cont">
+                    <i class="fa-solid fa-plus"></i><i class="fa-solid fa-minus"></i>
+                    <p class="rating_counter">rating: -10</p>
+                </div>
+                <form method="GET" class="add_comment_form">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Add comment..." name="add_comment" class="add_comment_input">
+                    <input type="submit" value="Comments" class="add_comment_button">
+                </form>
+            </div>
+            <div class="post">
+                <p class="users_tag">#Users tag</p>
+                <div class="post_image_cont">
+                    <img src="https://droider.ru/wp-content/uploads/2020/01/LGoEDSKPxnLjMpJv4VaEK5.jpg" alt="" class="post_image">
+                </div>
+                <div class="rating_cont">
+                    <i class="fa-solid fa-plus"></i><i class="fa-solid fa-minus"></i>
+                    <p class="rating_counter">rating: -10</p>
+                </div>
+                <form method="GET" class="add_comment_form">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Add comment..." name="add_comment" class="add_comment_input">
+                    <input type="submit" value="Comments" class="add_comment_button">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        'use strict'
+        function get_top(){
+            if (/Android|webOS|iPhone|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+                post_cont.style.top = '57%'
+            }
+        }
+        
+
+    </script>
+{% endblock %}
