@@ -23,21 +23,21 @@ def profile_page(request) -> None:
         accesses: Dict[str, int] = get_accesses(user)
 
         user_data = [
-            {
-                'label': 'First name',
-                'access': 1,
-                'data': user.first_name
-            },
-            {
-                'label': 'Last name',
-                'access': 1,
-                'data': user.last_name
-            },
-            {
-                'label': 'Username',
-                'access': 1,
-                'data': user.username
-            },
+            # {
+            #     'label': 'First name',
+            #     'access': 1,
+            #     'data': user.first_name
+            # },
+            # {
+            #     'label': 'Last name',
+            #     'access': 1,
+            #     'data': user.last_name
+            # },
+            # {
+            #     'label': 'Username',
+            #     'access': 1,
+            #     'data': user.username
+            # },
             {
                 'label': 'Date of birth',
                 'access': accesses['date_of_birth'],
@@ -76,6 +76,9 @@ def profile_page(request) -> None:
         ]
         context.update({
             'pagename': f'{ user.first_name } { user.last_name }',
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'username': user.username,
             'user_data': user_data,
         })
 
