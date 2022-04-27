@@ -1,0 +1,35 @@
+.table_container{
+    width: calc(100% - 89px);
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+
+table {
+    text-align: right;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+td {
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+td a{
+    text-decoration: none;
+    color: white;
+}
+
+tr:nth-child(even) {background-color: #1C1C1C;}
+
