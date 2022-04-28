@@ -15,11 +15,11 @@
                 <div class="soc_link"></div>
             </div>
             <p>Socials</p>
-            <div class="edit_profile_btn"><a href="#">Edit</a></div>
+            <div class="edit_profile_btn"><a href="/edit_profile/">Edit</a></div>
         </div>
         <div class="right_info_block">
             <p class="user_inf_p">{{ first_name }} {{last_name}}</p>
-            <p class="user_inf_p" style="font-size:22px">Nick: <span style="color:#009778">Andrew Karavashkov</span></p>
+            <p class="user_inf_p" style="font-size:22px">Nick: <span style="color:#009778">IllusionTV</span></p>
 
             {% for item in user_data %}
                 {% if item.access == 1 and item.label != "Profile picture" %}

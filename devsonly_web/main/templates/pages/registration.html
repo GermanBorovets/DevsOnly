@@ -13,7 +13,11 @@
                 <br>
                 <input type="password" name="double_password" placeholder="password again" maxlength="24" required="" id="id_double_password" class="wellcum_imp">
                 <br>
-                <input type="submit" value="Registration" class="wellcum_button">
+                <form>
+                    <input type="submit" value="Registration" class="wellcum_button" onclick=location.href="/login/">
+                    <br>
+                    <input type="submit" value="Already have?" class="wellcum_button" onclick=location.href="/login/">
+                </form>
             </form>
         </div>
     {% endblock %}
