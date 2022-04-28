@@ -27,6 +27,7 @@ from main.views.registration import registration_page, login_page
 from main.views.registration import registration_page
 from main.views.social import *
 from main.views.user import profile_page, edit_profile_page
+from main.views.admin import userlist_page
 
 
 urlpatterns = [
@@ -65,5 +66,8 @@ urlpatterns = [
     path('post/edit/<int:post_id>/',
          edit_post_page,
          name='edit_post'),
-    ]+ static(settings.MEDIA_URL,
+    path('userlist/',
+         userlist_page,
+         name='userlist'),
+    ]+static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)

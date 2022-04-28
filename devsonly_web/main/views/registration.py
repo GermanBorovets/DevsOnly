@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime, timedelta
 
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 
 from main.forms.registration import RegistrationForm, Login
-from main.models import User, UserSettings
+from main.models import User, UserSettings, Punishments
 from src.common import get_ip
 from src.logger import init_logger
 
@@ -52,6 +52,7 @@ def registration_page(request) -> None:
 
 
 def login_page(request) -> None:
+    logger = init_logger(__name__)
     context = {
         'pagename': 'Authorization'
     }
@@ -63,19 +64,36 @@ def login_page(request) -> None:
                                 username=data['username'],
                                 password=data['password'])
             if user is not None:
-                login(request, user)
-                HttpResponseRedirect('/')
-                messages.add_message(request,
-                                     messages.SUCCESS,
-                                     "Авторизация успешна")
+                if Punishments.objects.filter(user=User.objects.get(username=user.username), type=0).exists():
+                    punishment = Punishments.objects.get(user=User.objects.get(username=user.username), type=0)
+                    if punishment.expire_date is not None:
+                        if datetime.now() < punishment.expire_date(tz=None):
+                            messages.add_message(request,
+                                                 messages.ERROR,
+                                                 f"You are banned until "
+                                                 f"{punishment.expire_date.strftime('%Y-%m-%d %H:%M:%S')}")
+                        else:
+                            user.nwarns = 0
+                            punishment.delete()
+                    else:
+                        messages.add_message(request,
+                                             messages.ERROR,
+                                             "You are banned")
+
+                else:
+                    login(request, user)
+                    HttpResponseRedirect('/')
+                    messages.add_message(request,
+                                         messages.SUCCESS,
+                                         "Login succesful")
             else:
                 messages.add_message(request,
                                      messages.ERROR,
-                                     "Неверный логин или пароль")
+                                     "Wrong username or password")
         else:
             messages.add_message(request,
                                  messages.ERROR,
-                                 "Неверный формат данных")
+                                 "Invalid data")
     else:
         form = Login()
     context.update({
