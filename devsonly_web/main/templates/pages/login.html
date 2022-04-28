@@ -10,20 +10,5 @@
             class="wellcum_imp">
         <br>
         <input type="submit" value="Login" class="wellcum_button">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Devs0n1y</title>
-</head>
-<body>
-    <form action = '/login/' method = 'POST'>
-        {% csrf_token %}
-        {% for item in form %}
-        {{ item.label }} {{ item }} <br>
-        {% endfor %}
-      <input type = 'submit' value = 'Log in'>
-    </form>
-</div>
 {% endblock %}
 
