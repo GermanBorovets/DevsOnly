@@ -8,7 +8,7 @@
     {% for message in messages %}
         {{ message }}
     {% endfor %}
-    {% for user in punishments %}
+    {% for user in users %}
         {{ user.id }}
         {{ user.username }}
         <label>is superuser: </label> {{ user.is_superuser }}
@@ -16,19 +16,19 @@
         <label>, is moder: </label> {{ user.is_moder }}
         <label>, warnings: </label> {{ user.nwarns }}
         <label>, is banned:</label> {{ user.is_banned }}
+        <label>, is muted:</label> {{ user.is_muted }}
         {% if user.permanent_ban %}
             <label> permanently</label>
         {% endif %}
-        {{user}}
+
         <form action = "/userlist/" method='POST'>
             {% csrf_token %}
-            {% if request.user.is_superuser or request.user.is_staff %}
-                {% if not user.key.is_moder %}
-                    <button type="submit" name = 'moder toggle' value = {{user.id}} >Make moderator</button>
-                {% else %}
-                    <button type="submit" name = 'moder toggle' value = {{user.id}} >Unmake moderator</button>
-                {% endif %}
+            {% if not user.is_moder %}
+                <button type="submit" name = 'moder toggle' value = {{user.id}} >Make moderator</button>
+            {% else %}
+                <button type="submit" name = 'moder toggle' value = {{user.id}} >Unmake moderator</button>
             {% endif %}
+
             {% if request.user.is_superuser %}
                 {% if not user.is_staff %}
                     <button type="submit" name = 'staff toggle' value = {{user.id}} >Make staff</button>
@@ -36,31 +36,41 @@
                     <button type="submit" name = 'staff toggle' value = {{user.id}} >Unmake staff</button>
                 {% endif %}
             {% endif %}
-                {% if user.value %}
 
-                    <button type = 'submit' name = 'mute toggle' value = {{user.id}}>Unmute</button>
-                {% else %}
-                    <button type = 'submit' name = 'mute toggle' value = {{user.id}}>Mute</button>
-                {% endif %}
+            <button type="submit" name = 'warning' value = {{user.id}} >Warn</button>
+            {% if request.user.is_superuser or request.user.is_staff %}
+                <button type = "submit" name = 'delete' value = {{user.id}}>Delete user</button>
+            {% endif %}
+            <br>
+            <br>
 
-                <button type="submit" name = 'warning' value = {{user.id}} >Warn</button>
-
-                {% if True %}
+            {% if not user.is_banned %}
+                    {% for field in ban_form %}
+                        <label>Time of ban in seconds (put "0" for permanent ban)</label> {{field}}
+                    {% endfor %}
                     <button type="submit" name = 'ban toggle' value = {{user.id}}>Ban</button>
-                    {% if request.user.is_staff or request.user.is_superuser %}
-                        <button type = 'submit' name = 'permaban' value = {{user.id}}>Ban permanently</button>
-                        <button type = 'submit' name = 'ip ban' value = {{user.id}}>IP ban</button>
-                {% endif %}
-                {% if request.user.is_moder and not user.key.permanent_ban or request.user.is_staff or request.user.is_superuser %}
-                        <button type="submit" name = 'ban toggle' value = {{user.id}} >Unban</button>
+                    {% if request.user.is_superuser or request.user.is_staff %}
+                    <button type = 'submit' name = 'ip ban' value = {{user.id}}>IP Ban (permanent)</button>
                     {% endif %}
-                {% endif %}
-            {% if request.user.is_staff or request.user.is_superuser %}
-                <button type="submit" name = 'delete user' value = {{user.id}} >Delete user</button>
+
+            {% else %}
+                <button type="submit" name = 'ban toggle' value = {{user.id}} >Unban</button>
+            {% endif %}
+
+            <br>
+            <br>
+            {% if not user.is_muted %}
+                    {% for field in mute_form %}
+                        <label>Time of mute in seconds (put "0" for permanent mute)</label> {{field}}
+                    <button type = "submit" name = 'mute toggle' value = {{user.id}}>Mute</button>
+                    {% endfor %}
+            {% else %}
+                <button type = "submit" name = 'mute toggle' value = {{user.id}}>Unmute</button>
             {% endif %}
 
         </form>
         <br>
+        <hr>
     {% endfor %}
 </body>
 </html>

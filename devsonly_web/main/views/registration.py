@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timezone, timedelta
 
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 
 from main.forms.registration import RegistrationForm, Login
-from main.models import User, UserSettings, Punishments
+from main.models import User, UserSettings, BannedIPs
 from src.common import get_ip
 from src.logger import init_logger
 
@@ -51,7 +51,6 @@ def registration_page(request) -> None:
 
 
 def login_page(request) -> None:
-    logger = init_logger(__name__)
     context = {
         'pagename': 'Authorization'
     }
@@ -63,21 +62,17 @@ def login_page(request) -> None:
                                 username=data['username'],
                                 password=data['password'])
             if user is not None:
-                if Punishments.objects.filter(user=User.objects.get(username=user.username), type=0).exists():
-                    punishment = Punishments.objects.get(user=User.objects.get(username=user.username), type=0)
-                    if punishment.expire_date is not None:
-                        if datetime.now() < punishment.expire_date(tz=None):
-                            messages.add_message(request,
-                                                 messages.ERROR,
-                                                 f"You are banned until "
-                                                 f"{punishment.expire_date.strftime('%Y-%m-%d %H:%M:%S')}")
-                        else:
-                            user.nwarns = 0
-                            punishment.delete()
+                if user.is_banned or BannedIPs.objects.filter(IP=get_ip(request)):
+                    if user.unban_date is None:
+                        messages.error(request, "You are banned")
+                    elif datetime.now(tz=timezone(offset=timedelta(hours=0))) < user.unban_date:
+                        messages.error(request, f"You are banned until "
+                                                f"{user.unban_date.strftime('%H:%M:%S %d.%m.%Y')} UTC")
                     else:
-                        messages.add_message(request,
-                                             messages.ERROR,
-                                             "You are banned")
+                        user.nwarns = 0
+                        user.is_banned = False
+                        user.unban_date = None
+                        user.save()
 
                 else:
                     login(request, user)
