@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -29,71 +29,83 @@ def index_page(request) -> None:
 def add_post_page(request) -> None:
     context = {}
     logger = init_logger(__name__)
-
-    if request.method == 'POST':
-        post_form = PostForm(request.POST,
-                             request.FILES)
-        if post_form.is_valid():
-            cd = post_form.cleaned_data
-            images = []
-            audios = []
-            videos = []
-            files = []
-
-            post = Post(text=cd['text'],
-                        author=request.user,
-                        created=datetime.today(),
-                        modified=datetime.today(),
-                        comment_type=cd['comment_type'],
-                        likes=0,
-                        dislikes=0)
-            post.save()
-
-            messages.success(request,
-                             'Successfully saved.')
-            logger.info('Post has been successfully saved.')
-
-            # Saving media
-            for file in request.FILES.getlist('file'):
-                if filetype(file) == 'image':
-                    media = PostMedia(post=post,
-                                      image=file)
-                    media.save()
-                    images.append({'file': media.image,
-                                   'name': file})
-                elif filetype(file) == 'audio':
-                    media = PostMedia(post=post,
-                                      audio=file)
-                    media.save()
-                    audios.append({'file': media.audio,
-                                   'name': file})
-                elif filetype(file) == 'video':
-                    media = PostMedia(post=post,
-                                      video=file)
-                    media.save()
-                    videos.append({'file': media.video,
-                                   'name': file})
-                else:
-                    media = PostMedia(post=post,
-                                      file=file)
-                    media.save()
-                    files.append({'file': media.file,
-                                  'name': file})
-
-            context.update({'post': post,
-                            'images': images,
-                            'audios': audios,
-                            'videos': videos,
-                            'files': files,
-                            })
+    user = request.user
+    if user.is_muted:
+        if user.unmute_date is None:
+            messages.error(request, f"You are not allowed to post")
+        elif datetime.now(tz=timezone(offset=timedelta(hours=0))) < user.unmute_date:
+            messages.error(request, f"You are not allowed to post until "
+                                    f"{user.unmute_date.strftime('%H:%M:%S %d.%m.%Y')} UTC")
         else:
-            logger.error('Unable to save post.')
+            user.is_muted = False
+            user.unmute_date = None
+            user.save()
     else:
-        post_form = PostForm()
+        if request.method == 'POST':
+            post_form = PostForm(request.POST,
+                                 request.FILES)
+            if post_form.is_valid():
+                cd = post_form.cleaned_data
+                images = []
+                audios = []
+                videos = []
+                files = []
 
-    context.update({'pagename': 'Add post',
-                    'post_form': post_form,
-                    })
+                post = Post(text=cd['text'],
+                            author=request.user,
+                            created=datetime.today(),
+                            modified=datetime.today(),
+                            comment_type=cd['comment_type'],
+                            likes=0,
+                            dislikes=0)
+                post.save()
+
+                messages.success(request,
+                                 'Successfully saved.')
+                logger.info('Post has been successfully saved.')
+
+                # Saving media
+                for file in request.FILES.getlist('file'):
+                    if filetype(file) == 'image':
+                        media = PostMedia(post=post,
+                                          image=file)
+                        media.save()
+                        images.append({'file': media.image,
+                                       'name': file})
+                    elif filetype(file) == 'audio':
+                        media = PostMedia(post=post,
+                                          audio=file)
+                        media.save()
+                        audios.append({'file': media.audio,
+                                       'name': file})
+                    elif filetype(file) == 'video':
+                        media = PostMedia(post=post,
+                                          video=file)
+                        media.save()
+                        videos.append({'file': media.video,
+                                       'name': file})
+                    else:
+                        media = PostMedia(post=post,
+                                          file=file)
+                        media.save()
+                        files.append({'file': media.file,
+                                      'name': file})
+
+                context.update({'post': post,
+                                'images': images,
+                                'audios': audios,
+                                'videos': videos,
+                                'files': files,
+                                })
+            else:
+                logger.error('Unable to save post.')
+        else:
+            post_form = PostForm()
+
+        context.update({'pagename': 'Add post',
+                        'post_form': post_form,
+                        'user': request.user
+                        })
     return render(request, 'pages/add_post.html', context)
 
 

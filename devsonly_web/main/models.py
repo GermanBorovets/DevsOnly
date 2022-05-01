@@ -8,8 +8,7 @@ class User(AbstractUser):
     nwarns = models.IntegerField(default=0)
     # count of warns
     is_banned = models.BooleanField(default=False)
-    permanent_ban = models.BooleanField(default=False)
-    unban_date = models.DateField(null=True)
+    unban_date = models.DateTimeField(null=True)
     team_rating = models.IntegerField(default=0)
     # user rating as team member
     author_rating = models.IntegerField(default=0)
@@ -19,6 +18,8 @@ class User(AbstractUser):
     # ip addresses store as str
     date_of_birth = models.DateField(null=True)
     verified = models.BooleanField(default=False)
+    is_muted = models.BooleanField(default=False)
+    unmute_date = models.DateTimeField(null=True)
 
 
 class UserSettings(models.Model):
@@ -100,3 +101,7 @@ class HardSkills(models.Model):
 class UserSkills(models.Model):
     user = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     skill = models.ForeignKey(to=HardSkills, on_delete=models.CASCADE)
+
+
+class BannedIPs(models.Model):
+    IP = models.CharField(max_length=15)
