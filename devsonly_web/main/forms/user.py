@@ -6,6 +6,8 @@ from main.models import User
 
 
 class ProfileForm(forms.Form):
+    """! ProfileForm class
+    """
     username = forms.CharField(label='Username',
                                max_length=16,
                                required=False)
@@ -46,6 +48,9 @@ class ProfileForm(forms.Form):
                                  required=False)
 
     def clean_username(self):
+        """! Function to clean username
+        @return Cleaned username
+        """
         cleaned_data = super().clean()
         username = cleaned_data['username']
 
@@ -60,9 +65,14 @@ class ProfileForm(forms.Form):
 
 
 class EmailForm(forms.Form):
+    """! EmailForm class
+    """
     email = forms.EmailField(label='Email')
 
     def clean_email(self):
+        """! Function to clean email
+        @return Cleaned email
+        """
         cleaned_data = super().clean()
         email = cleaned_data['email']
 
@@ -76,15 +86,20 @@ class EmailForm(forms.Form):
 
 
 class PasswordForm(forms.Form):
+    """! PasswordForm class
+    """
     old_password = forms.CharField(label='Old password',
-                                      max_length=24,
-                                      widget=forms.PasswordInput)
+                                   max_length=24,
+                                   widget=forms.PasswordInput)
     new_password = forms.CharField(label='New password',
-                               max_length=24,
-                               widget=forms.PasswordInput,
-                               validators=[validate_password])
+                                   max_length=24,
+                                   widget=forms.PasswordInput,
+                                   validators=[validate_password])
 
     def clean_old_password(self):
+        """! Function to clean old password
+        @return old password of User
+        """
         cleaned_data = super().clean()
         old_password = cleaned_data.get('old_password')
 
@@ -94,7 +109,9 @@ class PasswordForm(forms.Form):
         return old_password
 
     def clean(self):
-        cleaned_data=super().clean()
+        """! Function to clean PasswordForm data
+        """
+        cleaned_data = super().clean()
         old_password = cleaned_data.get('old_password')
         new_password = cleaned_data.get('new_password')
 
@@ -105,5 +122,7 @@ class PasswordForm(forms.Form):
 
 
 class SkillsForm(forms.Form):
+    """! SkillsForm class
+    """
     requested_skills = forms.CharField(widget=forms.HiddenInput,
                                        required=False)
