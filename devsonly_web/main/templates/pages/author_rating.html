@@ -6,7 +6,7 @@
         {% for user in author_rating %}
             <tr>
                 <td>{{ user.id }}</td>
-                <td><a href="#">{ user.username }</a></td>
+                <td><a href="#">{{ user.username }}</a></td>
                 <td style="color: #009778;">{{ user.author_rating }}</td>
             </tr>
         {% endfor %}

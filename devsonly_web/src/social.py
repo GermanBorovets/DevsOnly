@@ -43,6 +43,7 @@ def filename(file: FileField) -> str:
 def post_exists(id: int) -> bool:
     return Post.objects.filter(id=id).exists()
 
+
 def collect_files(request, field, post: Post) -> dict:
     # Collects post files from field in request.FILES
     images = []

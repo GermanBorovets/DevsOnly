@@ -50,9 +50,7 @@ def registration_page(request) -> None:
     return render(request, 'pages/registration.html', context)
 
 
-
 def login_page(request) -> None:
-    logger = init_logger(__name__)
     context = {
         'pagename': 'Authorization'
     }
@@ -64,40 +62,22 @@ def login_page(request) -> None:
                                 username=data['username'],
                                 password=data['password'])
             if user is not None:
-                if Punishments.objects.filter(user=User.objects.get(username=user.username), type=0).exists():
-                    punishment = Punishments.objects.get(user=User.objects.get(username=user.username), type=0)
-                    if punishment.expire_date is not None:
-                        if datetime.now() < punishment.expire_date(tz=None):
-                            messages.add_message(request,
-                                                 messages.ERROR,
-                                                 f"You are banned until "
-                                                 f"{punishment.expire_date.strftime('%Y-%m-%d %H:%M:%S')}")
-                        else:
-                            user.nwarns = 0
-                            punishment.delete()
-                    else:
-                        messages.add_message(request,
-                                             messages.ERROR,
-                                             "You are banned")
-
-                else:
-                    login(request, user)
-                    HttpResponseRedirect('/')
-                    messages.add_message(request,
-                                         messages.SUCCESS,
-                                         "Login succesful")
+                login(request, user)
+                HttpResponseRedirect('/')
+                messages.add_message(request,
+                                     messages.SUCCESS,
+                                     "Авторизация успешна")
             else:
                 messages.add_message(request,
                                      messages.ERROR,
-                                     "Wrong username or password")
+                                     "Неверный логин или пароль")
         else:
             messages.add_message(request,
                                  messages.ERROR,
-                                 "Invalid data")
+                                 "Неверный формат данных")
     else:
         form = Login()
     context.update({
         'form': form,
     })
     return render(request, 'pages/login.html', context)
-

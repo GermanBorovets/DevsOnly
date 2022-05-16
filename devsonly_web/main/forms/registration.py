@@ -17,8 +17,8 @@ class RegistrationForm(forms.Form):
                                widget=forms.PasswordInput,
                                validators=[validate_password])
     double_password = forms.CharField(label='Repeat password',
-                                        max_length=24,
-                                        widget=forms.PasswordInput)
+                                      max_length=24,
+                                      widget=forms.PasswordInput)
     first_name = forms.CharField(label='First name',
                                  max_length=24,
                                  validators=[validate_letters],
@@ -33,17 +33,17 @@ class RegistrationForm(forms.Form):
                                     validators=[validate_birth_date],
                                     required=False)
     subjective = forms.CharField(label='Subjective',
-                               max_length = 16,
-                               widget=forms.TextInput(attrs={'placeholder': 'they',
-                                                             'class': 'form-control'}),
-                               validators=[validate_letters],
-                               required=False)
-    objective = forms.CharField(label='Objective',
                                  max_length=16,
-                                 widget=forms.TextInput(attrs={'placeholder': 'them',
+                                 widget=forms.TextInput(attrs={'placeholder': 'they',
                                                                'class': 'form-control'}),
                                  validators=[validate_letters],
                                  required=False)
+    objective = forms.CharField(label='Objective',
+                                max_length=16,
+                                widget=forms.TextInput(attrs={'placeholder': 'them',
+                                                              'class': 'form-control'}),
+                                validators=[validate_letters],
+                                required=False)
 
     def clean(self):
         cleaned_data = super().clean()

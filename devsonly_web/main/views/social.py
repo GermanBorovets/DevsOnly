@@ -4,10 +4,7 @@ from django.http import Http404
 from django.shortcuts import render
 from django.contrib import messages
 from src.logger import init_logger
-from src.social import filetype, filename
 from main.models import Post, PostMedia, Comment, CommentElement
-from main.forms.social import PostForm
-from main.models import User, HardSkills, UserSkills
 from main.forms.social import SkillsForm, CommentForm
 from src.social import filetype, filename, collect_files
 from main.models import Post, PostMedia, User, HardSkills, UserSkills
@@ -17,7 +14,6 @@ from main.forms.social import SkillsForm
 
 
 def index_page(request) -> None:
-
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
@@ -28,8 +24,6 @@ def index_page(request) -> None:
     return render(request, 'pages/index.html')
 
 
-
-@login_required
 def add_post_page(request) -> None:
     context = {}
     logger = init_logger(__name__)
@@ -55,8 +49,8 @@ def add_post_page(request) -> None:
 
             # Saving media
             media = collect_files(request,
-                                      'file',
-                                      post)
+                                  'file',
+                                  post)
 
             context.update({'post': post,
                             'images': media.get('images'),
@@ -81,13 +75,10 @@ def users_page(request) -> None:
     skills_form = SkillsForm(request.GET)
     skills = []
     skill_ids = []
-    users = []
-    user_ids = []
 
     # Collecting existing skill tags
     for skill in HardSkills.objects.all():
         skills.append(skill.tag)
-    print(skills)
 
     if skills_form.is_valid():
         requested_skills = skills_form.cleaned_data['requested_skills'].split()
@@ -116,12 +107,16 @@ def show_post_page(request, post_id):
         post = Post.objects.get(id=post_id)
         media = PostMedia.objects.filter(post_id=post_id)
 
+    return render(request, 'pages/post.html', context)
+
+
 @login_required
 def edit_post_page(request, post_id):
     context = {}
     logger = init_logger(__name__)
     try:
         post = Post.objects.get(id=post_id)
+
     except:
         raise Http404
     if post.author == request.user:
@@ -160,8 +155,8 @@ def edit_post_page(request, post_id):
                 # Saving added media
                 print(edit_form.cleaned_data['deleted_media'])
                 new_media = collect_files(request,
-                                              'new_media',
-                                              post)
+                                          'new_media',
+                                          post)
 
         # Collecting current media
         media = PostMedia.objects.filter(post_id=post_id)
@@ -183,7 +178,7 @@ def edit_post_page(request, post_id):
         if request.user.is_authenticated:
             if request.method == 'POST':
                 comment_form = CommentForm(request.POST,
-                                            request.FILES)
+                                           request.FILES)
                 if comment_form.is_valid():
                     cd = comment_form.cleaned_data
                     new_comment = Comment(post_id=post_id,
@@ -261,4 +256,3 @@ def edit_post_page(request, post_id):
 
     context.update({'pagename': 'Edit', })
     return render(request, 'pages/edit_post.html', context)
-

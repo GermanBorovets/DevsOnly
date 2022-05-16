@@ -106,7 +106,7 @@ def team_member_rating_page(request):
         'pagename': 'Member rating',
         'team_member_rating': User.objects.all()
     }
-    return render(request, 'pages/team_member_rating.html', context)
+    return render(request, 'pages/author_rating.html', context)
 
 
 @login_required
