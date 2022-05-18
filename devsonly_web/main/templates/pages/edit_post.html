@@ -1,94 +1,92 @@
 {% extends 'base/base.html' %}
+
 {% block content %}
-<div class="main_container">
-    <header>
-        <h2>{{ pagename }}</h2>
-        <hr>
-    </header>
-    <h3>Post {{ post.id }}:</h3>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-    
-        {{ edit_form }}
-        <hr>
-    
-            {% if images %}
-            {% for image in images %}
-                <div>
-                    <p>{{ image.name }}</p>
-                    <img src="{{ image.file.url }}">
+    <div class="main_container">
+        <div class="form_cont">
+            <h1>Edit Post</h1>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="text_block">
+                    {{ edit_form.text.label }}:
                     <br>
-                    <input type="button" value="Delete" onclick="deleteMedia(this)">
-                    <br>
+                    {{ edit_form.text }}
                 </div>
-            {% endfor %}
-            <hr>
+                
+
+                {% if images %}
+                    {% for image in images %}
+                        <div>
+                            <p class="file_name">{{ image.name }}</p>
+                            <img class="media_cont" src="{{ image.file.url }}">
+                            <br>
+                            <input class="post_button" type="button" value="Delete" onclick="deleteMedia(this)">
+                            <br>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if audios %}
+                    {% for audio in audios %}
+                        <div>
+                            <p class="file_name">{{ audio.name }} </p>
+                            <audio class="audio_cont" controls>
+                                <source src="{{ audio.file.url }}">
+                            </audio>
+                            <br>
+                            <input class="post_button" type="button" value="Delete" onclick="deleteMedia(this)">
+                            <br>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if videos %}
+                    {% for video in videos %}
+                        <div>
+                            <p class="file_name">{{ video.name }}</p>
+                            <video class="media_cont" controls>
+                                <source src="{{ video.file.url }}">
+                            </video>
+                            <br>
+                            <input class="post_button" type="button" value="Delete" onclick="deleteMedia(this)">
+                            <br>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if files %}
+                    {% for file in files %}
+                        <div>
+                            <a style="text-decoration: none; color: #009778; font-style: italic;" href="{{ file.file.url }}">
+                                {{ file.name }}
+                            </a>
+                            <br>
+                            <input class="post_button" type="button" value="Delete" onclick="deleteMedia(this)">
+                            <br>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <br>
+                {{ edit_form.new_media.label }}: {{ edit_form.new_media }}
+                {{ edit_form.deleted_media }}
+                <br>
+
+                <input class="post_button" type="submit" value="Save">
+            </form>
+        </div>
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
         {% endif %}
-    
-        {% if audios %}
-            {% for audio in audios %}
-                <div>
-                    <p>{{ audio.name }} </p>
-                    <audio controls>
-                        <source src="{{ audio.file.url }}">
-                    </audio>
-                    <br>
-                    <input type="button" value="Delete" onclick="deleteMedia(this)">
-                    <br>
-                </div>
-            {% endfor %}
-            <hr>
-        {% endif %}
-    
-        {% if videos %}
-            {% for video in videos %}
-                <div>
-                    <p>{{ video.name }}</p>
-                    <video controls>
-                        <source src="{{ video.file.url }}">
-                    </video>
-                    <br>
-                    <input type="button" value="Delete" onclick="deleteMedia(this)">
-                    <br>
-                </div>
-            {% endfor %}
-            <hr>
-        {% endif %}
-    
-        {% if files %}
-            {% for file in files %}
-                <div>
-                    <a href="{{ file.file.url }}">
-                        {{ file.name }}
-                    </a>
-                    <br>
-                    <input type="button" value="Delete" onclick="deleteMedia(this)">
-                    <br>
-                </div>
-            {% endfor %}
-            <hr>
-        {% endif %}
-        <br>
-        {{ edit_form.new_media.label }}: {{ edit_form.new_media }}
-        {{ edit_form.deleted_media }}
-        <hr>
-    
-        <input type="submit" value="Save">
-    </form>
-    
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    
+    </div>
     <script>
         'use strict';
-    
+
         document.getElementById('id_text').value = '{{ post.text }}';
-    
+
         function deleteMedia(element){
             let link = '';
             if (element.parentElement.querySelector('[src]')){
@@ -97,13 +95,12 @@
             if (element.parentElement.querySelector('[href]')){
                 link = element.parentElement.querySelector('[href]').href;
             }
-    
+
             let media = link.slice(link.indexOf('post/'));
             document.getElementById('id_deleted_media').value += `${media} `;
             console.log(`Deleting ${media}`);
             element.parentElement.remove();
         }
-    
+
     </script>
-</div>
 {% endblock %}

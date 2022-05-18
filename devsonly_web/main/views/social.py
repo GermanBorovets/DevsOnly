@@ -252,7 +252,8 @@ def edit_post_page(request, post_id):
                         'audios': audios,
                         'videos': videos,
                         'files': files,
-                        'comments': comments
+                        'comments': comments,
+                        'edit_form': edit_form
                         })
     else:
         raise Http404

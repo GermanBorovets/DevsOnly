@@ -1,0 +1,62 @@
+.post_button{
+    width: 10vh;
+    padding: 5px;
+    background-color: transparent;
+    border-radius: 5px;
+    border: 2px solid #009778;
+    color: #009778;
+    transition: 0.3s;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.post_button:hover{
+    color: #fff;
+    background-color: #009778;
+}
+
+input[type='text']{
+    background-color: transparent;
+    border: 2px solid rgba(0, 151, 120, 0.6);
+    border-radius: 5px;
+    padding: 2px;
+    color: rgba(255, 255, 255, 0.8);
+    outline: none;
+    font-size: 16px;
+}
+
+input[type='file']{
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.text_block{
+    margin-bottom: 15px;
+}
+
+.media_cont{
+    width: 30%;
+    height: 20%;
+    max-width: 500px;
+    min-width: 250px;
+}
+
+.form_cont{
+    margin-left: 2%;
+}
+
+.file_name{
+    font-size: 14px;
+    font-style: italic;
+    color: #009778;
+}
+
+.audio_cont{
+    padding: 5px;
+}
+
+@media only screen and (min-width : 280px) and (max-width : 480px) {
+    .audio_cont{
+        width: 90%;
+    }
+}
