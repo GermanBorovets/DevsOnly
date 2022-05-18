@@ -1,66 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Devs0n1y</title>
-</head>
-<body>
-    {% for message in messages %}
-        {{ message }}
-    {% endfor %}
-    {% for user in punishments %}
-        {{ user.id }}
-        {{ user.username }}
-        <label>is superuser: </label> {{ user.is_superuser }}
-        <label>, is staff: </label> {{ user.is_staff }}
-        <label>, is moder: </label> {{ user.is_moder }}
-        <label>, warnings: </label> {{ user.nwarns }}
-        <label>, is banned:</label> {{ user.is_banned }}
-        {% if user.permanent_ban %}
-            <label> permanently</label>
-        {% endif %}
-        {{user}}
-        <form action = "/userlist/" method='POST'>
-            {% csrf_token %}
-            {% if request.user.is_superuser or request.user.is_staff %}
-                {% if not user.key.is_moder %}
-                    <button type="submit" name = 'moder toggle' value = {{user.id}} >Make moderator</button>
-                {% else %}
-                    <button type="submit" name = 'moder toggle' value = {{user.id}} >Unmake moderator</button>
-                {% endif %}
-            {% endif %}
-            {% if request.user.is_superuser %}
-                {% if not user.is_staff %}
-                    <button type="submit" name = 'staff toggle' value = {{user.id}} >Make staff</button>
-                {% else %}
-                    <button type="submit" name = 'staff toggle' value = {{user.id}} >Unmake staff</button>
-                {% endif %}
-            {% endif %}
-                {% if user.value %}
+{% extends 'base/base.html' %}
 
-                    <button type = 'submit' name = 'mute toggle' value = {{user.id}}>Unmute</button>
-                {% else %}
-                    <button type = 'submit' name = 'mute toggle' value = {{user.id}}>Mute</button>
-                {% endif %}
+{% block content %}
+    <div class="main_container">
+        <h1>Userlist</h1>
 
-                <button type="submit" name = 'warning' value = {{user.id}} >Warn</button>
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
 
-                {% if True %}
-                    <button type="submit" name = 'ban toggle' value = {{user.id}}>Ban</button>
-                    {% if request.user.is_staff or request.user.is_superuser %}
-                        <button type = 'submit' name = 'permaban' value = {{user.id}}>Ban permanently</button>
-                        <button type = 'submit' name = 'ip ban' value = {{user.id}}>IP ban</button>
-                {% endif %}
-                {% if request.user.is_moder and not user.key.permanent_ban or request.user.is_staff or request.user.is_superuser %}
-                        <button type="submit" name = 'ban toggle' value = {{user.id}} >Unban</button>
-                    {% endif %}
-                {% endif %}
-            {% if request.user.is_staff or request.user.is_superuser %}
-                <button type="submit" name = 'delete user' value = {{user.id}} >Delete user</button>
-            {% endif %}
-
-        </form>
-        <br>
-    {% endfor %}
-</body>
-</html>
+        <div class="users_cont">
+            {% for user in punishments %}
+                <div class="user">
+                    <table class="users_table">
+                        <tr class="table_tr">
+                            <td class="table_td">{{ user.id }}</td>
+                            <td class="table_td">{{ user.username }}</td>
+                            <td class="table_td">Superuser: {{ user.is_superuser }}</td>
+                            <td class="table_td">Staff: {{ user.is_staff }}</td>
+                            <td class="table_td">Moder: {{ user.is_moder }}</td>
+                            <td class="table_td">Warnings: {{ user.nwarns }}</td>
+                            <td class="table_td">Banned: {{ user.is_banned }}</td>
+                            {% if user.permanent_ban %}
+                                <td class="table_td">Permanently</td>
+                            {% endif %}
+                        </tr>
+                    </table>  
+                    <div class="user_form">
+                        <form action = "/userlist/" method='POST'>
+                            {% csrf_token %}
+                            {% if request.user.is_superuser or request.user.is_staff %}
+                                {% if not user.key.is_moder %}
+                                    <button class="admin_button" type="submit" name = 'moder toggle' value = {{user.id}} >Make moderator</button>
+                                {% else %}
+                                    <button class="admin_button" type="submit" name = 'moder toggle' value = {{user.id}} >Unmake moderator</button>
+                                {% endif %}
+                            {% endif %}
+                            {% if request.user.is_superuser %}
+                                {% if not user.is_staff %}
+                                    <button class="admin_button" type="submit" name = 'staff toggle' value = {{user.id}} >Make staff</button>
+                                {% else %}
+                                    <button class="admin_button" type="submit" name = 'staff toggle' value = {{user.id}} >Unmake staff</button>
+                                {% endif %}
+                            {% endif %}
+                                {% if user.value %}
+    
+                                    <button class="admin_button" type = 'submit' name = 'mute toggle' value = {{user.id}}>Unmute</button>
+                                {% else %}
+                                    <button class="admin_button" type = 'submit' name = 'mute toggle' value = {{user.id}}>Mute</button>
+                                {% endif %}
+    
+                                <button class="admin_button" type="submit" name = 'warning' value = {{user.id}} >Warn</button>
+    
+                                {% if True %}
+                                    <button class="admin_button" type="submit" name = 'ban toggle' value = {{user.id}}>Ban</button>
+                                    {% if request.user.is_staff or request.user.is_superuser %}
+                                        <button class="admin_button" type = 'submit' name = 'permaban' value = {{user.id}}>Ban permanently</button>
+                                        <button class="admin_button" type = 'submit' name = 'ip ban' value = {{user.id}}>IP ban</button>
+                                {% endif %}
+                                {% if request.user.is_moder and not user.key.permanent_ban or request.user.is_staff or request.user.is_superuser %}
+                                        <button class="admin_button" type="submit" name = 'ban toggle' value = {{user.id}} >Unban</button>
+                                    {% endif %}
+                                {% endif %}
+                            {% if request.user.is_staff or request.user.is_superuser %}
+                                <button class="admin_button" type="submit" name = 'delete user' value = {{user.id}} >Delete user</button>
+                            {% endif %}
+    
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div> 
+    </div>
+{% endblock %}
