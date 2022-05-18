@@ -9,7 +9,7 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
     
-        {{ edit_form.text.label }}: {{ edit_form.text }}
+        {{ edit_form }}
         <hr>
     
             {% if images %}
