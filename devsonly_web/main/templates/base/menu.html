@@ -10,7 +10,7 @@
     <!--<title>Dashboard Sidebar Menu</title>-->
 </head>
 <body>
-<nav class="sidebar close">
+<nav class="sidebar close" id="SB">
     <header>
         <div class="image-text">
             <span class="image">D0</span>
@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <i class='bx bx-chevron-right toggle'></i>
+        <i class='bx bx-chevron-right toggle' id="BT_1"></i>
     </header>
 
     <div class="menu-bar">
@@ -111,9 +111,14 @@
         searchBtn = body.querySelector(".search-box"),
         modeSwitch = body.querySelector(".toggle-switch"),
         modeText = body.querySelector(".mode-text");
+        SB = body.querySelector('#SB');
 
-
+    baran = 2;
     toggle.addEventListener("click", () => {
+        SB.style.height = "100%";
+        baran += 1;
+        if(baran % 2 == 0 && window.screen.width<=450)
+            SB.style.height = "7%";
         sidebar.classList.toggle("close");
     })
 
@@ -124,7 +129,6 @@
             modeText.innerText = "Light mode";
         } else {
             modeText.innerText = "Dark mode";
-
         }
     });
 </script>
