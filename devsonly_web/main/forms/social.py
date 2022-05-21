@@ -3,7 +3,10 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from main.models import PostMedia
 
+
 class PostForm(forms.Form):
+    """! PostForm class
+    """
     text = forms.CharField(label='Text',
                            widget=forms.TextInput(attrs={'placeholder': 'Write your text here...'}),
                            required=False)
@@ -27,11 +30,14 @@ class PostForm(forms.Form):
 
 
 class SkillsForm(forms.Form):
+    """! SkillsForm class
+    """
     requested_skills = forms.CharField(widget=forms.HiddenInput)
 
 
-
 class CommentForm(forms.Form):
+    """! CommentForm class
+    """
     text = forms.CharField(label='Text',
                            widget=forms.TextInput(attrs={'placeholder': 'Write here...'}),
                            required=False)
@@ -47,12 +53,15 @@ class CommentForm(forms.Form):
             raise ValidationError('You can not save empty comment',
                                   code='empty')
 
+
 class EditPostForm(forms.Form):
+    """! EditPostForm class
+    """
     text = forms.CharField(label='Change text',
                            required=False)
     new_media = forms.FileField(label='Add file',
-                           widget=forms.ClearableFileInput(attrs={'multiple': True}),
-                           required=False)
+                                widget=forms.ClearableFileInput(attrs={'multiple': True}),
+                                required=False)
     deleted_media = forms.CharField(widget=forms.HiddenInput,
                                     required=False)
 
@@ -67,4 +76,3 @@ class EditPostForm(forms.Form):
                 raise ValidationError('Invalid value',
                                       code='invalid')
         return deleted_media
-
