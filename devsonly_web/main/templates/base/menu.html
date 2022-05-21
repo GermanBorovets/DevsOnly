@@ -45,7 +45,18 @@
                 <li class="nav-link">
                     <a href="#">
                         <i class='bx bx-user icon'></i>
-                        <span class="text nav-text">German Borovets</span><!--username-->
+                        {% if request.user.is_authenticated %}
+                        <span class="text nav-text">{{ request.user }}</span><!--username-->
+                        {% endif %}
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="/userlist/">
+                        <i class='bx bx-user icon'></i>
+                        {% if request.user.is_staff or request.user.is_superuser %}
+                        <span class="text nav-text">[ADMIN]</span><!--username-->
+                        {% endif %}
                     </a>
                 </li>
 
@@ -82,10 +93,17 @@
 
         <div class="bottom-content">
             <li class="">
-                <a href="#">
+                {% if request.user.is_authenticated %}
+                <a href="/logout/">
                     <i class='bx bx-log-out icon'></i>
                     <span class="text nav-text">Logout</span>
                 </a>
+                {% else %}
+                <a href="/login/">
+                    <i class='bx bx-log-out icon'></i>
+                    <span class="text nav-text">Login</span>
+                </a>
+                {% endif %}
             </li>
 <!--endif-->
             <li class="mode">
