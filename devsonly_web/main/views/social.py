@@ -203,6 +203,7 @@ def edit_post_page(request, post_id):
             edit_form = EditPostForm(request.POST,
                                      request.FILES)
             if edit_form.is_valid():
+                print(edit_form.fields)
                 cd = edit_form.cleaned_data
                 post.text = cd['text']
                 post.save()
@@ -229,6 +230,8 @@ def edit_post_page(request, post_id):
                 new_media = collect_files(request,
                                           'new_media',
                                           post)
+        else:
+            edit_form = EditPostForm()
 
         # Collecting current media
         media = PostMedia.objects.filter(post_id=post_id)
@@ -321,7 +324,8 @@ def edit_post_page(request, post_id):
                         'audios': audios,
                         'videos': videos,
                         'files': files,
-                        'comments': comments
+                        'comments': comments,
+                        'edit_form': edit_form
                         })
     else:
         raise Http404

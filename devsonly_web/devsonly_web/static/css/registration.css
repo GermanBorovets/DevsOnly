@@ -20,10 +20,10 @@
 }
 
 .wellcum_button{
-    width: 15vh;
-    height: 5vh;
+    width: 55%;
+    height: 85%;
     background-color: transparent;
-    border-radius: 5px;
+    border-radius: 8px;
     border: 2px solid #009778;
     color: #009778;
     transition: 0.3s;
@@ -55,4 +55,21 @@
 }
 .Reg_logo{
     margin-bottom: 5px;
+}
+
+@media only screen and (min-width: 100px) and (max-width: 450px) {
+    #SB{
+        height: 7%;
+        border-radius: 20px;
+    }
+    .wellcum_bod{
+        transform: scale(1.5);
+    }
+    LG.value = 'fdf';
+}
+
+@media only screen and (min-width: 450px){
+    #SB{
+        height: 100%;
+    }
 }
