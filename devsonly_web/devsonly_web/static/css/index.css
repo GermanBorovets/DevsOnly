@@ -22,6 +22,10 @@
     justify-content: start;
     margin: 10px;
     max-width: 1000px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
 }
 
 .mainLogo{
@@ -33,4 +37,18 @@
     align-items: center;
     justify-content: center;
     background-color: inherit;
+}
+
+@media only screen and (min-width : 280px) and (max-width : 480px) {
+    .wellcum_logo {
+        font-size: 5vh;
+    }
+
+    .wellcum_text {
+        font-size: 5vh;
+    }
+
+    .wellcum{
+        margin: 5px;
+    }
 }
