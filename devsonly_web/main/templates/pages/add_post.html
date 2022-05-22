@@ -19,89 +19,91 @@
             <br><br>
         {% endif %}
 
-        <form action="/post/add/" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
+        {% if not user.is_muted %}
+            <form action="/post/add/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
 
-            {% if post_form.non_field_errors %}
-                <ul>
-                    {% for error in non_field_errors.as_text %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-
-            {% for field in post_form %}
-                {% if field.errors %}
+                {% if post_form.non_field_errors %}
                     <ul>
-                        {% for error in field.errors %}
+                        {% for error in non_field_errors.as_text %}
                             <li>{{ error }}</li>
                         {% endfor %}
                     </ul>
                 {% endif %}
 
-                <label>{{ field.label }}:</label>
-                <br>
-                {{ field }}
-                <br><br>
-            {% endfor %}
+                {% for field in post_form %}
+                    {% if field.errors %}
+                        <ul>
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
 
-            <input type="submit" value="Create block">
-        </form>
-        <hr>
-        {% if post %}
-            <h3>Post:</h3>
-            <p>Author: {{ post.author }}</p>
+                    <label>{{ field.label }}:</label>
+                    <br>
+                    {{ field }}
+                    <br><br>
+                {% endfor %}
+
+                <input type="submit" value="Create block">
+            </form>
             <hr>
-
-            <p>Text: {{ post.text }}</p>
-            <hr>
-
-            {% if images %}
-                {% for image in images %}
-                    <p>{{ image.name }}</p>
-                    <img src="{{ image.file.url }}">
-                    <br>
-                {% endfor %}
+            {% if post %}
+                <h3>Post:</h3>
+                <p>Author: {{ post.author }}</p>
                 <hr>
-            {% endif %}
 
-            {% if audios %}
-                {% for audio in audios %}
-                    <p>{{ audio.name }} </p>
-                    <audio controls>
-                        <source src="{{ audio.file.url }}">
-                    </audio>
-                    <br>
-                {% endfor %}
+                <p>Text: {{ post.text }}</p>
                 <hr>
-            {% endif %}
 
-            {% if videos %}
-                <p>{{ video.name }}</p>
-                {% for video in videos %}
-                    <video controls>
-                        <source src="{{ video.file.url }}">
-                    </video>
-                    <br>
-                {% endfor %}
+                {% if images %}
+                    {% for image in images %}
+                        <p>{{ image.name }}</p>
+                        <img src="{{ image.file.url }}">
+                        <br>
+                    {% endfor %}
+                    <hr>
+                {% endif %}
+
+                {% if audios %}
+                    {% for audio in audios %}
+                        <p>{{ audio.name }} </p>
+                        <audio controls>
+                            <source src="{{ audio.file.url }}">
+                        </audio>
+                        <br>
+                    {% endfor %}
+                    <hr>
+                {% endif %}
+
+                {% if videos %}
+                    <p>{{ video.name }}</p>
+                    {% for video in videos %}
+                        <video controls>
+                            <source src="{{ video.file.url }}">
+                        </video>
+                        <br>
+                    {% endfor %}
+                    <hr>
+                {% endif %}
+
+                {% if files %}
+                    {% for file in files %}
+                        <a href="{{ file.file.url }}">
+                            {{ file.name }}
+                        </a>
+                        <br>
+                    {% endfor %}
+                    <hr>
+                {% endif %}
+
+                <p>Likes: {{ post.likes }}</p>
+                <p>Dislikes: {{ post.dislikes }}</p>
                 <hr>
+                <p>Created: {{ post.created }}</p>
+                <p>Last modified: {{ post.modified }}</p>
             {% endif %}
-
-            {% if files %}
-                {% for file in files %}
-                    <a href="{{ file.file.url }}">
-                        {{ file.name }}
-                    </a>
-                    <br>
-                {% endfor %}
-                <hr>
-            {% endif %}
-
-            <p>Likes: {{ post.likes }}</p>
-            <p>Dislikes: {{ post.dislikes }}</p>
-            <hr>
-            <p>Created: {{ post.created }}</p>
-            <p>Last modified: {{ post.modified }}</p>
         {% endif %}
     </body>
 </html>

@@ -1,5 +1,5 @@
-from datetime import datetime
-from django.contrib.auth.decorators import login_required
+from datetime import datetime, timedelta, timezone
+
 from django.http import Http404
 from django.shortcuts import render
 from django.contrib import messages
@@ -7,9 +7,14 @@ from src.logger import init_logger
 from main.models import Post, PostMedia, Comment, CommentElement
 from main.forms.social import SkillsForm, CommentForm
 from src.social import filetype, filename, collect_files
-from main.models import Post, PostMedia, User, HardSkills, UserSkills
 from main.forms.social import PostForm, SkillsForm, EditPostForm
-from main.models import User, HardSkills, UserSkills, Punishments
+
+from src.social import filetype
+from main.models import Post, PostMedia
+from main.forms.social import PostForm
+
+from main.models import User, HardSkills, UserSkills
+
 from main.forms.social import SkillsForm
 
 
@@ -58,15 +63,82 @@ def add_post_page(request) -> None:
                             'videos': media.get('videos'),
                             'files': media.get('files'),
                             })
+    if user.is_muted:
+        if user.unmute_date is None:
+            messages.error(request, f"You are not allowed to post")
+        elif datetime.now(tz=timezone(offset=timedelta(hours=0))) < user.unmute_date:
+            messages.error(request, f"You are not allowed to post until "
+                                    f"{user.unmute_date.strftime('%H:%M:%S %d.%m.%Y')} UTC")
         else:
-            logger.error('Unable to save post.')
+            user.is_muted = False
+            user.unmute_date = None
+            user.save()
     else:
-        if not Punishments.objects.filter(user=User.objects.get(username=request.user.username), type=3).exists():
-            post_form = PostForm()
-            context.update({'post_form': post_form})
+        if request.method == 'POST':
+            post_form = PostForm(request.POST,
+                                 request.FILES)
+            if post_form.is_valid():
+                cd = post_form.cleaned_data
+                images = []
+                audios = []
+                videos = []
+                files = []
+
+                post = Post(text=cd['text'],
+                            author=request.user,
+                            created=datetime.today(),
+                            modified=datetime.today(),
+                            comment_type=cd['comment_type'],
+                            likes=0,
+                            dislikes=0)
+                post.save()
+
+                messages.success(request,
+                                 'Successfully saved.')
+                logger.info('Post has been successfully saved.')
+
+                # Saving media
+                for file in request.FILES.getlist('file'):
+                    if filetype(file) == 'image':
+                        media = PostMedia(post=post,
+                                          image=file)
+                        media.save()
+                        images.append({'file': media.image,
+                                       'name': file})
+                    elif filetype(file) == 'audio':
+                        media = PostMedia(post=post,
+                                          audio=file)
+                        media.save()
+                        audios.append({'file': media.audio,
+                                       'name': file})
+                    elif filetype(file) == 'video':
+                        media = PostMedia(post=post,
+                                          video=file)
+                        media.save()
+                        videos.append({'file': media.video,
+                                       'name': file})
+                    else:
+                        media = PostMedia(post=post,
+                                          file=file)
+                        media.save()
+                        files.append({'file': media.file,
+                                      'name': file})
+
+                context.update({'post': post,
+                                'images': images,
+                                'audios': audios,
+                                'videos': videos,
+                                'files': files,
+                                })
+            else:
+                logger.error('Unable to save post.')
         else:
-            messages.error(request, 'You are muted')
-    context.update({'pagename': 'Add post'})
+            post_form = PostForm()
+
+        context.update({'pagename': 'Add post',
+                        'post_form': post_form,
+                        'user': request.user
+                        })
     return render(request, 'pages/add_post.html', context)
 
 

@@ -5,10 +5,10 @@ from django.db import models
 
 class User(AbstractUser):
     is_moder = models.BooleanField(default=False)
-    is_muted = models.BooleanField(default=False)
-    unmute_date = models.DateField(null=True)
     nwarns = models.IntegerField(default=0)
     # count of warns
+    is_banned = models.BooleanField(default=False)
+    unban_date = models.DateTimeField(null=True)
     team_rating = models.IntegerField(default=0)
     # user rating as team member
     author_rating = models.IntegerField(default=0)
@@ -18,6 +18,8 @@ class User(AbstractUser):
     # ip addresses store as str
     date_of_birth = models.DateField(null=True)
     verified = models.BooleanField(default=False)
+    is_muted = models.BooleanField(default=False)
+    unmute_date = models.DateTimeField(null=True)
 
 
 class UserSettings(models.Model):
@@ -40,9 +42,9 @@ class Punishments(models.Model):
     executor = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE, related_name='punishing_executor')
     type = models.IntegerField()
     # type of punishment, 0-ban, 1-warn, 2-ip ban, 3-mute
-    reason = models.CharField(max_length=255)
-    expire_date = models.DateTimeField(null=True)
+    term = models.DateTimeField(default=None)
     # if exists
+    reason = models.CharField(max_length=255)
 
 
 class StaffPunishments(models.Model):
