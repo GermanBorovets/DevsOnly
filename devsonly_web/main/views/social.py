@@ -182,7 +182,6 @@ def show_post_page(request, post_id):
     return render(request, 'pages/post.html', context)
 
 
-@login_required
 def edit_post_page(request, post_id):
     context = {}
     logger = init_logger(__name__)
