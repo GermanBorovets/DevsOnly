@@ -99,7 +99,7 @@ def add_post_page(request) -> None:
                 logger.info('Post has been successfully saved.')
 
                 # Saving media
-                for file in request.FILES.getlist('file'):
+                for file in request.FILES.getlist('file') and media != None:
                     if filetype(file) == 'image':
                         media = PostMedia(post=post,
                                           image=file)
