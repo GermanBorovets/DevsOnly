@@ -1,0 +1,49 @@
+.main_container_profile{
+    width: calc(100% - 88px);
+    height: 100vh;
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile_form_container{
+    background: #313131;
+    border-radius: 5px;
+    width: 90%;
+    padding: 10px;
+    margin: 10px;
+}
+
+input{
+    margin-bottom: 5px;
+}
+
+input[type="email"]{
+    background-color: transparent;
+    border: 3px solid #009778;
+    border-radius: 5px;
+    padding: 2px;
+    color: rgba(255, 255, 255, 0.8);
+    outline: none;
+}
+
+input[type="password"]{
+    background-color: transparent;
+    border: 3px solid #009778;
+    border-radius: 5px;
+    padding: 2px;
+    color: rgba(255, 255, 255, 0.8);
+    outline: none;
+}
+
+textarea{
+    background-color: transparent;
+    border: 3px solid #009778;
+    border-radius: 5px;
+    padding: 2px;
+    color: rgba(255, 255, 255, 0.8);
+    outline: none;
+}
