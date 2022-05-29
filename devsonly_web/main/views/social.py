@@ -32,6 +32,7 @@ def index_page(request) -> None:
 def add_post_page(request) -> None:
     context = {}
     logger = init_logger(__name__)
+    user = request.user
 
     if request.method == 'POST':
         post_form = PostForm(request.POST,
@@ -178,6 +179,15 @@ def show_post_page(request, post_id):
     if Post.objects.filter(id=post_id).exists():
         post = Post.objects.get(id=post_id)
         media = PostMedia.objects.filter(post_id=post_id)
+        print(media)
+        context.update({'post': post})
+        if media:
+            context.update({
+                'images': media.get('images'),
+                'audios': media.get('audios'),
+                'videos': media.get('videos'),
+                'files': media.get('files'),
+            })
 
     return render(request, 'pages/post.html', context)
 

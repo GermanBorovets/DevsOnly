@@ -1,143 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Devs0n1y</title>
-    </head>
-    <body>
-        <header>
-            {{ pagename }}
-            <hr>
-        </header>
+{% extends 'base/base.html' %}
 
-        <p>Author: {{ post.author }}</p>
-        <hr>
-
-        <p>Text: {{ post.text }}</p>
-        <hr>
-
-        {% if images %}
-            {% for image in images %}
-                <p>{{ image.name }}</p>
-                <img src="{{ image.file.url }}">
-                <br>
-            {% endfor %}
-            <hr>
-        {% endif %}
-
-        {% if audios %}
-            {% for audio in audios %}
-                <p>{{ audio.name }}</p>
-                <audio controls>
-                    <source src="{{ audio.file.url }}">
-                </audio>
-                <br>
-            {% endfor %}
-            <hr>
-        {% endif %}
-
-        {% if videos %}
-            {% for video in videos %}
-                <p>{{ video.name }}</p>
-                <video controls>
-                    <source src="{{ video.file.url }}">
-                </video>
-                <br>
-            {% endfor %}
-            <hr>
-        {% endif %}
-
-        {% if files %}
-            {% for file in files %}
-                <a href="{{ file.file.url }}">
-                    {{ file.name }}
-                </a>
-                <br>
-            {% endfor %}
-            <hr>
-        {% endif %}
-
-        <p>Likes: {{ post.likes }}</p>
-        <p>Dislikes: {{ post.dislikes }}</p>
-        <hr>
-        <p>Created: {{ post.created }}</p>
-        <p>Last modified: {{ post.modified }}</p>
-        <hr>
-
-        <p>Comments:</p>
-        <hr>
-
-        {% for comment in comments %}
-            {% if post.comment_type %}
-                <p>Author: {{ comment.author }}</p>
-                <hr>
+{% block content %}
+    <div class="main_container">
+        <div class="form_container">
+            {% if messages %}
+                <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+                <br><br>
             {% endif %}
 
-            <p>Text: {{ comment.text }}</p>
-            <hr>
 
-            {% if comment.images %}
-                {% for image in comment.images %}
-                    <p>{{ image.name }}</p>
-                    <img src="{{ image.file.url }}">
-                    <br>
-                {% endfor %}
-                <hr>
-            {% endif %}
+        </div>
 
-            {% if comment.audios %}
-                {% for audio in comment.audios %}
-                    <p>{{ audio.name }}</p>
-                    <audio controls>
-                        <source src="{{ audio.file.url }}">
-                    </audio>
-                {% endfor %}
-                <hr>
-            {% endif %}
+        {% if post %}
+            <div class="post_container">
+                <p>Posted by <span style="color: #009778">{{ post.author }}</span></p>
+                <p>{{ post.text }}</p>
 
-            {% if comment.videos %}
-                {% for video in comment.videos %}
-                    <p>{{ video.name }}</p>
-                    <video controls>
-                        <source src="{{ video.file.url }}">
-                    </video>
-                {% endfor %}
-                <hr>
-            {% endif %}
+                {% if images %}
+                    <div class="images_cont">
+                        {% for image in images %}
+                            <img class="post_image" src="{{ image.file.url }}">
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
-            {% if comment.files %}
-                {% for file in comment.files %}
-                    <a href="{{ file.file.url }}">
-                        {{ file.name }}
-                    </a>
-                    <br>
-                {% endfor %}
-                <hr>
-            {% endif %}
+                {% if audios %}
+                    <div style="margin-top: 10px;">
+                        {% for audio in audios %}
+                            <audio controls>
+                                <source src="{{ audio.file.url }}">
+                            </audio>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
-            <p>Likes: {{ comment.likes }}</p>
-            <p>Dislikes: {{ comment.dislikes }}</p>
-            <hr>
+                {% if videos %}
+                    <div class="images_cont">
+                        {% for video in videos %}
+                            <video class="post_image" controls>
+                                <source src="{{ video.file.url }}">
+                            </video>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
-            <p>Created: {{ comment.created }}</p>
-            <hr><hr>
-        {% endfor %}
-
-        {% if request.user.is_authenticated %}
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                {% for field in comment_form %}
-                    {{ field.label }}:
-                    <br>
-                    {{ field }}
-                    <br><br>
-                {% endfor %}
-
-                <input type="submit" value="Send">
-            </form>
-        {% else %}
-            <p>Unregistered users are unable to write comments.</p>
+                {% if files %}
+                    {% for file in files %}
+                        <a href="{{ file.file.url }}" style="text-decoration: none; color:#009778; margin-top: 10px; font-style: italic;">
+                            {{ file.name }}
+                        </a>
+                    {% endfor %}
+                {% endif %}
+                <div class="reactions_cont">
+                    <form action="/post/{{ post.id }}" method="POST">
+                        {% csrf_token %}
+                    <input type="submit" name="_like"><p><i class="fa-solid fa-heart"></i> {{ post.likes }}</p></input>
+                    <p><i class="fa-solid fa-heart-crack"></i> {{ post.dislikes }}</p>
+                    </form>
+                </div>
+                <div class="dates">
+                    <p>Created: {{ post.created }}</p>
+                    <p>Last modified: {{ post.modified }}</p>
+                </div>
+            </div>
         {% endif %}
-    </body>
-</html>
+
+    </div>
+{% endblock %}

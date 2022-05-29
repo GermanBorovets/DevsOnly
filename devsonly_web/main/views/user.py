@@ -13,7 +13,6 @@ from src.user import user_exists, userset_exists, get_accesses, is_userset_owner
 from main.models import User, UserSettings, HardSkills, UserSkills
 from main.forms.user import ProfileForm, EmailForm, PasswordForm, SkillsForm
 
-
 logger = init_logger(__name__)
 
 
@@ -79,7 +78,7 @@ def profile_page(request) -> None:
             },
         ]
         context.update({
-            'pagename': f'{ user.first_name } { user.last_name }',
+            'pagename': f'{user.first_name} {user.last_name}',
             'first_name': user.first_name,
             'last_name': user.last_name,
             'username': user.username,
@@ -131,8 +130,8 @@ def edit_profile_page(request, user_id):
 
         if user.date_of_birth and user.date_of_birth != '':
             date_of_birth = (str(user.date_of_birth.day) + '-' +
-                         str(user.date_of_birth.month) + '-' +
-                         str(user.date_of_birth.year))
+                             str(user.date_of_birth.month) + '-' +
+                             str(user.date_of_birth.year))
         else:
             date_of_birth = ''
 
