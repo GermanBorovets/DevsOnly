@@ -58,8 +58,8 @@
                 <div class="reactions_cont">
                     <form action="/post/{{ post.id }}" method="POST">
                         {% csrf_token %}
-                    <input type="submit" name="_like"><p><i class="fa-solid fa-heart"></i> {{ post.likes }}</p></input>
-                    <p><i class="fa-solid fa-heart-crack"></i> {{ post.dislikes }}</p>
+                        <button type="submit" class="reaction_btn"><p><i class="fa-solid fa-heart"></i> {{ post.likes }}</p></button>
+                        <button type="submit" class="reaction_btn"><p><i class="fa-solid fa-heart-crack"></i> {{ post.dislikes }}</p></button>
                     </form>
                 </div>
                 <div class="dates">

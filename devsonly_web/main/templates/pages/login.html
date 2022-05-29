@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 {% block content %}
-    <div class="wellcum_bod">
+    <div class="login_cont">
         <form action = '/login/' method = 'POST'>
             {% csrf_token %}
             {% for item in form %}

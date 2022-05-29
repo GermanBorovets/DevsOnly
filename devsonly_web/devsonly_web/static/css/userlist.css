@@ -49,6 +49,20 @@
     background-color: #009778;
 }
 
+input[type="number"]{
+    background-color: transparent;
+    border: 2px solid rgba(0, 151, 120, 0.6);
+    border-radius: 5px;
+    padding: 2px;
+    color: rgba(255, 255, 255, 0.8);
+    outline: none;
+    margin-left: 5px;
+}
+
+label{
+    margin-left: 5px;
+}
+
 
 @media only screen and (min-width : 280px) and (max-width : 480px) {
     .users_table{
@@ -61,6 +75,10 @@
     }
 
     .admin_button{
+        font-size: 10px;
+    }
+
+    label{
         font-size: 10px;
     }
 }
